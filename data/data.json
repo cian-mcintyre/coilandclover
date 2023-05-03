@@ -1,0 +1,45 @@
+[
+    {
+        "id": 0,
+        "productName": "EQE Saloon",
+        "image": "X",
+        "category": "Saloon",
+        "colour": "White",
+        "Quantity": "4",
+        "Price": 85295
+        
+    },
+
+    {
+        "id": 1,
+        "productName": "CLA Coupe",
+        "image": "X",
+        "category": "Coupe",
+        "colour": "Black",
+        "Quantity": "8",
+        "Price": 47495
+        
+    },
+
+    {
+        "id": 2,
+        "productName": "SL Roadster",
+        "image": "X",
+        "category": "Roadster",
+        "colour": "Red",
+        "Quantity": "2",
+        "Price": 238395
+        
+    },
+
+    {
+        "id": 3,
+        "productName": "EQA SUV",
+        "image": "X",
+        "category": "SUV",
+        "colour": "White",
+        "Quantity": "1",
+        "Price": 238395
+        
+    }
+]

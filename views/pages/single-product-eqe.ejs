@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="../../public/img/fav.png">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Mercedes</title>
+<!--
+		CSS
+		============================================= -->
+	<link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../public/css/themify-icons.css">
+	<link rel="stylesheet" href="../../public/css/bootstrap.css">
+	<link rel="stylesheet" href="../../public/css/owl.carousel.css">
+	<link rel="stylesheet" href="../../public/css/nice-select.css">
+	<link rel="stylesheet" href="../../public/css/nouislider.min.css">
+	<link rel="stylesheet" href="../../public/css/ion.rangeSlider.css" />
+	<link rel="stylesheet" href="../../public/css/ion.rangeSlider.skinFlat.css" />
+	<link rel="stylesheet" href="../../public/css/magnific-popup.css">
+	<link rel="stylesheet" href="../../public/css/main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="/"><img src="../../public/img/logo.png" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item "><a class="nav-link" href="/">Home</a></li>
+							<li class="nav-item active submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Shop</a>
+								 <ul class="dropdown-menu"1	1>
+									<li class="nav-item"><a class="nav-link" href="/category">Shop all cars</a></li>
+									<li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="/single-product-cla">CLA Coupe</a></li>
+									<li class="nav-item active"><a class="nav-link" href="/single-product-eqe">EQE Saloon</a></li>
+									<li class="nav-item"><a class="nav-link" href="/single-product-sl">SL Roadster</a></li>
+									<li class="nav-item"><a class="nav-link" href="/single-product-eqa">EQA SUV</a></li>
+									<li class="nav-item"><a class="nav-link" href="/coming-soon">Coming Soon</a></li>
+								</ul>
+							</li>
+							
+							<li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Account</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+									<li class="nav-item"><a class="nav-link" href="/registration">Register</a></li>
+									<li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
+									<li class="nav-item"><a class="nav-link" href="/logout">logout</a></li>
+								</ul>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item"><a href="/cart" class="cart"><span class="fa fa-shopping-cart">(<%= cartItemCount %>)</span></a></li>
+							<li class="nav-item">
+								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li>
+							<li class="nav-item active greeting"><a href="/account" class="creat_account"><span class="lnr lnr-user"></span></a>
+                                <% if (user) { %>
+                                    Hi <%= user.firstName %>
+                                  <% } %></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<div class="search_input" id="search_input_box">
+			<div class="container">
+				<form action="/search" method="GET" class="d-flex justify-content-between">
+					<input type="text" name="q" class="form-control" id="search_input" placeholder="Search for cars">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div>
+	</header>
+	<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1 >OUR MODELS</h1>
+					<nav class="d-flex align-items-center">
+						<a href="/">HOME<span class="lnr lnr-arrow-right"></span></a>
+						<a href="/category">SHOP ALL CARS<span class="lnr lnr-arrow-right"></span></a>
+						<a href="/single-product-cla">EQE SALOON</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Single Product Area =================-->
+
+	<div class="product_image_area">
+		<div class="container">
+			<h1 >EQE SALOON</h1>
+			<h5>THIS IS FOR ALL SENSES.</h5>
+			<br>
+			<div class="row s_product_inner">
+				<div class="col-lg-10">
+					<div class="s_Product_carousel">
+						<div class="single-prd-item">
+							<hr >
+							<img class="img-fluid" src="../../public/img/eqe1.jpeg" alt="">
+							<p>Timeless shapes for a new era.</p>
+							</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/eqe2.jpeg" alt="">
+							<p>21-inch twin-spoke rims.</p>
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/eqe3.jpeg" alt="">
+							<p>The digital cockpit with futuristic MBUX Hyperscreen.</p>
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/eqe4.jpeg" alt="">
+							<p>Puristic aesthetics. Pure aerodynamics.</p>
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/eqe5.jpeg" alt="">
+							<p>Relaxed luxury.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+				<div class="col-lg-6 offset-lg-2">
+					<div class="s_product_text">
+						<h5 >DESIGN HIGHLIGHTS</h5>
+						<hr >
+						<h3 >Purist luxury and dynamism down to the last detail.</h3>
+						<p>The new EQE combines its dynamic appearance with a luxurious interior - a balance of technical innovation and modern aesthetics. From the iconic one-bow design to the stunning MBUX Hyperscreen: the new EQE combines sensual aesthetics with pioneering engineering at the highest level. Experience a new, luxurious era of electric mobility.</p>
+						<img class="img-fluid" src="../../public/img/eqe16.jpeg" alt="" >
+						<br>
+						<br>
+						<h5 >EXTERIOR</h5>
+						<hr >
+						<h3 >Mercedes-EQE Saloon</h3>
+						<p>Find out more about the exterior highlights of the EQE Saloon from Mercedes-EQE. Different equipment lines give the vehicle its very own character - from extensive standard equipment to Electric Art and AMG Line.</p>
+						<h6 >EXTERIOR HIGHLIGHTS</h6>
+						<ul>
+							<li>
+								<h6 class="bttn">Panorama sliding sunroof</h6>
+
+								<p class="pfunc1">With the panoramic sliding sunroof, you experience a wonderful feeling of freedom and enjoy a pleasantly bright ambience in the interior. When viewed from the outside, the generous sliding sunroof likewise makes a unique visual impression, as it lends lightness and exclusivity to the exterior. Innovative: operation via touch slider.
+									<img 
+									 class="img-fluid" src="../../public/img/eqe6.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Radiator grille with Mercedes-Benz pattern</h6>
+								<p class="pfunc1">Your assurance of an impressive appearance: the Black Panel radiator grille of your vehicle features finely drawn Mercedes stars. Especially when viewed up close, this confirms your attention to detail.
+									<img 
+									 class="img-fluid" src="../../public/img/eqe7.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">DIGITAL LIGHT</h6>
+								 <p class="pfunc1">The optional DIGITAL LIGHT headlamp technology with projection function in the EQE Saloon from Mercedes-EQ complements the MULTIBEAM LED headlamps with their high-resolution lighting technology. The light acts in an anticipatory manner, adapting to the course of the road and the traffic situation.
+									<img class="img-fluid" src="../../public/img/eqe8.jpeg" alt="" style="width:700px;">
+								 </p>
+							</li>
+							<li>
+								<h6 class="bttn">Flush door handles</h6>
+								<p class="pfunc1">These door handles blend seamlessly into the vehicle's bodywork and round off the elegant appearance of your EQE Saloon. The handles extend automatically when you are in the immediate vicinity of the vehicle to unlock it. As soon as you lock the vehicle or drive off, the handles retract.
+									<img  class="img-fluid" src="../../public/img/eqe9.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Light-alloy wheels</h6>
+								<p class="pfunc1">Light-alloy wheels up to 53.3 cm (21") are available for the EQE Saloon from Mercedes-EQ.</p>
+									<img class="img-fluid" src="../../public/img/eqe10.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">LED rear lights in 3D helix design.</h6>
+								<p class="pfunc1">A special highlight at the rear are the innovatively designed rear lights: their inner workings take the form of a curved and illuminated 3D helix.
+									<img class="img-fluid" src="../../public/img/eqe11.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+						</ul>  
+						<hr>
+						<h5 >COMFORT AND SAFETY</h5>
+						<hr>
+						<h3>Expand your comfort zone.</h3>
+						<p>Thanks to these innovations, you get out more energetic and refreshed than when you got in.</p>
+						<ul>
+							<li>
+								<h6 class="bttn">Air filter system with HEPA filter</h6>
+								<p class="pfunc2">Inhale deeply - and exhale: with a filter performance of up to 99.65%, the new HEPA (High-Efficiency Particulate Air) fine particle filter can clean the incoming air of the smallest particles such as pollen and fine dust particles and neutralise unpleasant odours.
+									<img class="img-fluid" src="../../public/img/eqe12.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Multicontour seats for driver and front passenger</h6>
+								<p class="pfunc2">The perfect restraint: eight air chambers and four vibration elements ensure the highest level of comfort in the multicontour seats. Ten massage programmes in two intensities turn every ride into a wellness programme.
+									<img class="img-fluid" src="../../public/img/eqe13.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Electric mobility for all senses</h6>
+								<p class="pfunc2">Driving with all your senses: sounds that respond to your driving, a luxurious mix of materials and fragrancing of the interior make your time in the new EQE high-quality time.
+									<img class="img-fluid" src="../../public/img/eqe14.jpeg" alt="" style="width:700px;">
+								</p>
+								</li>
+							<li>
+								<h6 class="bttn">Rear axle steering up to 10°</h6>
+								<p class="pfunc2">Set the direction: the rear axle steering of the all-electric EQE, available as an option, ensures excellent traction and agile driving dynamics. In three steps of up to 10° you can park, turn and drive in flawless balance.
+									<img class="img-fluid" src="../../public/img/eqe15.jpeg" alt="" style="width:700px;">
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Remote parking</h6>
+								<p class="pfunc2">It's up to you: use your smartphone and the Remote Parking App (Android, iOS) to park your new EQE perfectly. A milestone on the road to autonomous driving.
+									<img class="img-fluid" src="../../public/img/eqe1.jpg" alt="" style="width:700px;">
+								</p>
+							</li>
+						</ul> 
+						<hr>
+						<h5 >DESIGN AND EQUIPMENT LINES</h5>
+						<hr>
+						<h6 >Standard equipment</h6>
+						<img class="img-fluid" src="../../public/img/eqe17.jpeg" alt="" style="width:700px;">
+						<p>The key features:<br>
+							- Black panel radiator grille with central Mercedes star
+							<br>
+							- LED High Performance headlamps
+							<br>
+							- Lower section of front apron in grained black, upper trim element in silver chrome and lower trim element in high-gloss black
+							<br>
+							- Rear apron painted in the vehicle colour, lower part in grained black
+							<br>
+							- LED tail lights in a 3D helix design with light band at the rear
+							<br>
+							- 48.3 cm (19-inch) 10-spoke light-alloy wheels, aerodynamically optimised and painted in high-gloss black
+							Charging cable for wallbox and public charging station, 5 m, straight
+						</p>
+						<h6 >AMG Line</h6>
+						<img class="img-fluid" src="../../public/img/eqe18.jpeg" alt="" style="width:700px;">
+						<p>The key features:<br>
+							- Black panel radiator grille with central Mercedes star
+							<br>
+							- AMG bodystyling (AMG-specific front bumper, AMG-specific rear apron painted in body colour)
+							<br>
+							- Side skirts in high-gloss black with door trim in chrome
+							<br>
+							- Beltline and windowline trim strips in chrome
+							<br>
+							- 48.3 cm (19-inch) AMG 5-twin-spoke light-alloy wheels, aerodynamically optimised, painted in black with a high-sheen finish
+						</p>
+						<hr >
+						<div class="price_list">
+							<a class="primary-btn" href="mercedes-benz-eqe-price-list.pdf" download>Price list</a>
+						</div>
+						<br>
+						<div class="price_list">
+							<a class="primary-btn" href="/contact">Request a Test Drive</a>
+							
+						</div>
+					</div>
+				</div>
+			<!-- </div>
+		</div>
+		<br>
+	</div> -->
+	<!--================End Single Product Area =================-->
+
+<!-- start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>
+                        Welcome to the Mercedes-Benz garage of the future, where state-of-the-art technology and unparalleled service come together. 
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Stay update with our latest</p>
+                    <div class="" id="mc_embed_signup">
+						<form action="/" method="get" class="form-inline">
+
+                            <div class="d-flex flex-row">
+
+                                <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Enter Email '" required="" type="email">
+
+
+                                <button class="click-btn btn btn-default"><span class="lnr lnr-arrow-right"></span></button>
+                                <div style="position: absolute; left: -5000px;">
+                                    <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+                                        type="text">
+                                </div>
+
+                                <!-- <div class="col-lg-4 col-md-4">
+                                                <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                            </div>  -->
+                            </div>
+                            <div class="info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget mail-chimp">
+                    <h6 class="mb-20">Instragram Feed</h6>
+                    <ul class="instafeed d-flex flex-wrap">
+                        <li><img src="../../public/img/i1.png" alt=""></li>
+                        <li><img src="../../public/img/i2.png" alt=""></li>
+                        <li><img src="../../public/img/i3.png" alt=""></li>
+                        <li><img src="../../public/img/i4.png" alt=""></li>
+                        <li><img src="../../public/img/i5.png" alt=""></li>
+                        <li><img src="../../public/img/i6.png" alt=""></li>
+                        <li><img src="../../public/img/i7.png" alt=""></li>
+                        <li><img src="../../public/img/i8.png" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Follow Us</h6>
+                    <p>Let us be social</p>
+                    <div class="footer-social d-flex align-items-center">
+                        <a href="https://www.facebook.com/MercedesBenzIreland/"><i class="fa fa-facebook"></i></a>
+                        <a href="https://twitter.com/MB_IRELAND"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+            <p class="footer-text m-0">
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+</p>
+        </div>
+    </div>
+</footer>
+<!-- End footer Area -->
+
+<script src="../../public/js/vendor/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+ crossorigin="anonymous"></script>
+<script src="../../public/js/vendor/bootstrap.min.js"></script>
+<script src="../../public/js/jquery.ajaxchimp.min.js"></script>
+<script src="../../public/js/jquery.nice-select.min.js"></script>
+<script src="../../public/js/jquery.sticky.js"></script>
+<script src="../../public/js/nouislider.min.js"></script>
+<script src="../../public/js/jquery.magnific-popup.min.js"></script>
+<script src="../../public/js/owl.carousel.min.js"></script>
+<!--gmaps Js-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+<script src="../../public/js/gmaps.min.js"></script>
+<script src="../../public/js/main.js"></script>
+</body>
+
+</html>

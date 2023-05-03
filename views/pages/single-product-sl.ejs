@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="../../public/img/fav.png">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Mercedes</title>
+	<!--
+		CSS
+		============================================= -->
+		<link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../../public/css/themify-icons.css">
+		<link rel="stylesheet" href="../../public/css/bootstrap.css">
+		<link rel="stylesheet" href="../../public/css/owl.carousel.css">
+		<link rel="stylesheet" href="../../public/css/nice-select.css">
+		<link rel="stylesheet" href="../../public/css/nouislider.min.css">
+		<link rel="stylesheet" href="../../public/css/ion.rangeSlider.css" />
+		<link rel="stylesheet" href="../../public/css/ion.rangeSlider.skinFlat.css" />
+		<link rel="stylesheet" href="../../public/css/magnific-popup.css">
+		<link rel="stylesheet" href="../../public/css/main.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="/"><img src="../../public/img/logo.png" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item "><a class="nav-link" href="/">Home</a></li>
+							<li class="nav-item active submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Shop</a>
+								 <ul class="dropdown-menu"1	1>
+									<li class="nav-item"><a class="nav-link" href="/category">Shop all cars</a></li>
+									<li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="/single-product-cla">CLA Coupe</a></li>
+									<li class="nav-item"><a class="nav-link" href="/single-product-eqe">EQE Saloon</a></li>
+									<li class="nav-item active"><a class="nav-link" href="/single-product-sl">SL Roadster</a></li>
+									<li class="nav-item"><a class="nav-link" href="/single-product-eqa">EQA SUV</a></li>
+									<li class="nav-item"><a class="nav-link" href="/coming-soon">Coming Soon</a></li>
+								</ul>
+							</li>
+							
+							<li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Account</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+									<li class="nav-item"><a class="nav-link" href="/registration">Register</a></li>
+									<li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
+									<li class="nav-item"><a class="nav-link" href="/logout">logout</a></li>
+								</ul>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item"><a href="/cart" class="cart"><span class="fa fa-shopping-cart">(<%= cartItemCount %>)</span></a></li>
+							<li class="nav-item">
+								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li>
+							<li class="nav-item active greeting"><a href="/account" class="creat_account"><span class="lnr lnr-user"></span></a>
+                                <% if (user) { %>
+                                    Hi <%= user.firstName %>
+                                  <% } %></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<div class="search_input" id="search_input_box">
+			<div class="container">
+				<form action="/search" method="GET" class="d-flex justify-content-between">
+					<input type="text" name="q" class="form-control" id="search_input" placeholder="Search for cars">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div>
+	</header>
+	<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1 >OUR MODELS</h1>
+					<nav class="d-flex align-items-center">
+						<a href="/">HOME<span class="lnr lnr-arrow-right"></span></a>
+						<a href="/category">SHOP ALL CARS<span class="lnr lnr-arrow-right"></span></a>
+						<a href="/single-product-cla">SL ROADSTER</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Single Product Area =================-->
+	<div class="product_image_area"> 
+		<div class="container">
+			<h1 >SL ROADSTER</h1>
+			<h5>THE STAR IS REBORN.</h5>
+			<br>
+			<div class="row s_product_inner">
+				<div class="col-lg-10">
+					<div class="s_Product_carousel">
+						<div class="single-prd-item">
+							<hr >
+							<img class="img-fluid" src="../../public/img/sl2.jpeg" alt="">
+							<p>Open driving: Even when the outside temperature is very low, the AIRSCARF and the zone seat heating create a cosy atmosphere.</p>
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/sl1.jpeg" alt="">
+							<p>Impressively superior: AMG-specific radiator grille and DIGITAL LIGHT</p>
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/sl3.jpeg" alt="">
+							<p>Pure dynamics: 53.3-cm (21-inch) AMG light-alloy wheels (optional)</p>
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="../../public/img/sl4.jpeg" alt="">
+							<p>Freedom at the touch of a button: black fabric soft top, optionally grey or red</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+				<div class="col-lg-6 offset-lg-2">
+					<div class="s_product_text">
+						<h5 >DESIGN HIGHLIGHTS</h5>
+						<hr >
+						<h3 >Puts you in the best light everywhere</h3>
+						</p>The new Mercedes-AMG SL as part of an automotive legend makes clear 
+						statements: For passionate performance. For exclusive comfort. And 
+						of course for irresistible design. Open the fabric roof and experience 
+						exciting voyages of discovery and unforgettable moments of pleasure. 
+						<br>Quality time with yourself.<br>
+						Visible tailpipe trim elements and rear apron with trim in chrome 43.2-cm (17-inch) 
+						5-twin-spoke light-alloy wheels, aerodynamically optimised, painted in matte black with 
+						a high-sheen finish. Chrome-plated beltline and window line trim strip</p>
+						<br>
+						<img class="img-fluid" src="../../public/img/sl5.jpeg" alt="" style="width:700px;">
+						<br>
+						<br>
+						<h5 >INTERIOR</h5>
+						<hr >
+						<h3 >SL Roadster interior</h3>
+						<p>The high-quality combination of the analogue world and the latest digital equipment is characteristic of the revolutionary interior experience.</p>
+						<h6 >INTERIOR HIGHLIGHTS</h6>
+						<ul>
+							<li>
+								<h6 class="bttn">Head-up display</h6>
+
+								<p class="pfunc1">The best outlooks for sporty driving pleasure and a superior driving experience: the head-up display transforms your windscreen into an exciting digital cockpit. This means you always have a direct view of key information. Your full attention remains on the road and the traffic conditions ahead of you.
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Driver display</h6>
+								<p class="pfunc1"> On the high-resolution driver display (with 31.2 cm (12.3-inch) screen diagonal), you always have all the important information in view. The display in the instrument cluster can be personalised with different display styles, AMG-specific displays and individually selectable main views. The display is easily visible through a visor, even when the sun is shining and the soft top is open.
+								</p>
+							</li>
+							<li>
+								<h6 class="bttn">Central display</h6>
+								 <p class="pfunc1">The free-standing central display (with 30.2 cm (11.9-inch) screen diagonal) on the centre console is the dominant control surface for navigation, MBUX functions or automatic climate control. To avoid disruptive light reflections caused by different sun positions when the fabric top is open, the inclination of the touch screen can be electrically adjusted from 12° to 32°.</p>
+							</li>
+							<li> 
+								<h6 class="bttn">ENERGIZING Packages</h6>
+								<p class="pfunc1">The ENERGIZING packages contribute to your support through comfort programmes. Ten-minute programs direct air conditioning, ambient lighting, music and seat functions such as massage or heating/ventilation. You will be amazed at how your concentration can be improved on long journeys.</p>
+							</li>
+							<li>
+								<h6 class="bttn">MBUX Augmented Reality for Navigation</h6>
+								<p class="pfunc1">To help you find your way in complex traffic situations, MBUX Augmented Reality for Navigation networks the virtual world with reality. The technology incorporates graphic navigation instructions and traffic information in real images. You can reach your destination quickly, safely and stress-free.</p>
+							</li>
+							<li>
+								<h6 class="bttn">MBUX Voice Assistant</h6>
+								<p class="pfunc1">Discover the advantages of the intelligent MBUX voice assistant - no fixed commands are necessary. With the keyword "Hey Mercedes" you activate the voice input and can add a specific operating request, for example for navigation, automatic climate control or changing the radio station.</p>
+							</li>
+						</ul>  
+						<hr> 
+						<img class="img-fluid" src="../../public/img/sl6.jpeg" alt="" style="width:700px;">
+						<hr>
+						<h6 >UPHOLSTERY</h6>
+						<p>The choice of upholstery for the multicontour and AMG performance seats reflects the wide range of comfortable to performance-oriented equipment for the Mercedes-AMG SL.</p>
+						<img class="img-fluid" src="../../public/img/sl7.jpeg" alt="" style="width:700px;">
+						<hr>
+						<h6 >INTERIOR TRIM</h6>
+						<p>The trim lends your interior an individual look. It blends in harmoniously while also creating exciting contrasts. As such it reinforces and underscores the interior design. At the same time, the decorative element is a perceptible quality feature at all times.</p>
+						<img class="img-fluid" src="../../public/img/sl8.jpeg" alt="" style="width:700px;">
+						<hr>
+						<h6 >AMBIENT LIGHTING</h6>
+						<p>Depending on the equipment and configuration, the ambient lighting frames the interior in 64 colours, with the "discreet" display style for the displays linked to the ambient lighting. A total of eight background colours are there to choose from, each one of them is assigned to one of the 64 colours.</p>
+						<img class="img-fluid" src="../../public/img/sl9.jpeg" alt="" style="width:700px;">
+						<hr>						
+						<h5>SAFETY HIGHLIGHTS</h5>
+						<hr >
+						<h3 >Ready to give their all: the safety systems</h3>
+						<p>Thanks to intelligent safety systems, the new SL Roadster can noticeably relieve you, support you and, should the worst ever come to the worst, protect you, too</p>
+						<ul>
+							<li>
+								<h6 class="bttn">360° camera</h6>
+								<p class="pfunc2">Keeping an eye on your surroundings: the all-round view of the 360° camera including a virtual bird's-eye view is particularly impressive. Thanks to the intelligent networking of 4 cameras, you can also see obstacles via the media display which are actually outside your field of view. This makes parking even easier.</p>
+							</li>
+							<li>
+								<h6 class="bttn">Head airbags in the rear</h6>
+								<p class="pfunc2">The head airbags in the rear can deploy on the impact side in the area between the passengers' heads and the side window in the event of a severe side collision. This can reduce the risk of a head impact to the side of the vehicle or intrusion of objects for the rear seat occupants.</p>
+							</li>
+							<li>
+								<h6 class="bttn">PRE-SAFE® system</h6>
+								<p class="pfunc2">The PRE-SAFE® system makes use of the time prior to an impending impact to help reduce the levels of stress to which you will be exposed. In dangerous situations, for example, PRE-SAFE® tightens the driver's and passenger's seat belts as a precaution, or moves the passenger seat to a more favourable position for a possible collision.</p>
+							</li>
+							<li>
+								<h6 class="bttn">Active Lane Keeping Assist</h6>
+								<p class="pfunc2">Active Lane Keeping Assist is an attentive observer: if you unintentionally leave your lane or get dangerously close to other road users, the system can bring you back into your lane with the help of a steering intervention. If you leave the lane nevertheless, an additional warning follows in the form of steering wheel vibrations.</p>
+							</li>
+							<li>
+								<h6 class="bttn">DIGITAL LIGHT with projection function</h6>
+								<p class="pfunc2">With DIGITAL LIGHT you experience ideal lighting conditions. The HD system works like a projector and reacts with brilliant light optimally adapted to changing conditions of traffic, road or weather. DIGITAL LIGHT also assists you with information projected onto the road surface and optimises orientation.</p>
+							</li>
+							<li>
+								<h6 class="bttn">Active Distance Assist DISTRONIC</h6>
+								<p class="pfunc2">You will be grateful for the convenience of Active Distance Assist DISTRONIC in flowing and stop-and-go traffic. The system takes the strain off you by automatically adapting your own speed to that of slower-moving vehicles travelling ahead. The desired specified distance can be set at several levels.</p>
+							</li>
+							<li>
+								<h6 class="bttn">GUARD 360° vehicle protection Plus</h6>
+								<p class="pfunc2">GUARD 360° vehicle protection Plus offers all-round monitoring of the vehicle's environment. Thanks to the anti-theft alarm system, as well as emergency key deactivation, you will be able to act quickly. On the road, the collision detection notifies you via the app. And the Stolen Vehicle Help service increases the chance of recovering your property if your vehicle is ever stolen.</p>
+							</li>
+						</ul> 
+						<hr> 
+						<img class="img-fluid" src="../../public/img/sl6.jpeg" alt="" style="width:700px;">
+						<hr >
+						<div class="price_list">
+							<a class="primary-btn" href="../../mercedes-benz-sl-price-list" download>Price list</a>
+						</div>
+						<br>
+						<div class="price_list">
+							<a class="primary-btn" href="/contact">Request a Test Drive</a>
+							
+						</div>
+					</div>
+				</div>
+	<!--================End Single Product Area =================-->
+
+<!-- start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>
+                        Welcome to the Mercedes-Benz garage of the future, where state-of-the-art technology and unparalleled service come together. 
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Stay update with our latest</p>
+                    <div class="" id="mc_embed_signup">
+						<form action="/" method="get" class="form-inline">
+
+                            <div class="d-flex flex-row">
+
+                                <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Enter Email '" required="" type="email">
+
+
+                                <button class="click-btn btn btn-default"><span class="lnr lnr-arrow-right"></span></button>
+                                <div style="position: absolute; left: -5000px;">
+                                    <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+                                        type="text">
+                                </div>
+
+                                <!-- <div class="col-lg-4 col-md-4">
+                                                <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                            </div>  -->
+                            </div>
+                            <div class="info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget mail-chimp">
+                    <h6 class="mb-20">Instragram Feed</h6>
+                    <ul class="instafeed d-flex flex-wrap">
+                        <li><img src="../../public/img/i1.png" alt=""></li>
+                        <li><img src="../../public/img/i2.png" alt=""></li>
+                        <li><img src="../../public/img/i3.png" alt=""></li>
+                        <li><img src="../../public/img/i4.png" alt=""></li>
+                        <li><img src="../../public/img/i5.png" alt=""></li>
+                        <li><img src="../../public/img/i6.png" alt=""></li>
+                        <li><img src="../../public/img/i7.png" alt=""></li>
+                        <li><img src="../../public/img/i8.png" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Follow Us</h6>
+                    <p>Let us be social</p>
+                    <div class="footer-social d-flex align-items-center">
+                        <a href="https://www.facebook.com/MercedesBenzIreland/"><i class="fa fa-facebook"></i></a>
+                        <a href="https://twitter.com/MB_IRELAND"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+            <p class="footer-text m-0">
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+</p>
+        </div>
+    </div>
+</footer>
+<!-- End footer Area -->
+
+<script src="../../public/js/vendor/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+ crossorigin="anonymous"></script>
+<script src="../../public/js/vendor/bootstrap.min.js"></script>
+<script src="../../public/js/jquery.ajaxchimp.min.js"></script>
+<script src="../../public/js/jquery.nice-select.min.js"></script>
+<script src="../../public/js/jquery.sticky.js"></script>
+<script src="../../public/js/nouislider.min.js"></script>
+<script src="../../public/js/jquery.magnific-popup.min.js"></script>
+<script src="../../public/js/owl.carousel.min.js"></script>
+<!--gmaps Js-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+<script src="../../public/js/gmaps.min.js"></script>
+<script src="../../public/js/main.js"></script>
+</body>
+
+</html>
