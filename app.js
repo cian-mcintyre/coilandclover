@@ -574,8 +574,8 @@ app.get('/single-product-cla', (req, res) => {
 
 // INIT SERVER
 
-app.listen(4000, function(){
-    console.log('server is running on port 4000');
+app.listen(80, function(){
+    console.log('server is running on port 80');
 });
 
 
