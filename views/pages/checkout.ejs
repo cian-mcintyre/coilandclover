@@ -129,15 +129,16 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <h3>Billing Details</h3>
-                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name" placeholder="First name">
-                                <span class="placeholder"></span>
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name" placeholder="Last name">
-                                <span class="placeholder"></span>
-                            </div>
+                        <form id="orderForm" class="row contact_form" action="/orders" method="post" novalidate="novalidate">
+                        
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name">
+                            <span class="placeholder"></span>
+                          </div>
+                          <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name">
+                            <span class="placeholder"></span>
+                          </div>
                             <div class="col-md-12 form-group">
                                 <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
                             </div>
@@ -146,7 +147,7 @@
                                 <span class="placeholder"></span>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany" placeholder="Email Address">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email Address">
                                 <span class="placeholder"></span>
                             </div>
                             <div class="col-md-12 form-group p_star">
@@ -183,10 +184,23 @@
                                     <input type="checkbox" id="f-option3" name="selector">
                                     <label for="f-option3">Ship to a different address?</label>
                                 </div>
+                                <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
+                                <% if (Array.isArray(cartItems)) { %>
+                                    <% cartItems.forEach(function(item) { %>
+                                      <input type="hidden" name="cartItem[]" value="<%= item.name %>|<%= item.price %>">
+                                    <% }); %>
+                                  <% } %>
                                 <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
+                                <button type="submit" id="placeOrderBtn" class="btn btn-primary">PLACE ORDER</button>
                             </div>
                         </form>
                     </div>
+
+
+
+
+
+
                     <div class="col-lg-4">
                         <div class="order_box">
                             <h2>Your Order</h2>
@@ -207,21 +221,28 @@
                               
                               <p>Subtotal: €</p>
 
-
-                            <div class="payment_item active">
-                                <div class="radion_btn">
-                                    <input type="radio" id="f-option6" name="selector">
-                                    <label for="f-option6">Paypal </label>
-                                    <img src="../../public/img/product/card.jpg" alt="">
-                                    <div class="check"></div>
-                                </div>
-                            </div>
+                              <form action="/charge" method="post">
+                                <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
+                                <script
+                                    src="https://checkout.stripe.com/checkout.js"
+                                    class="stripe-button"
+                                    data-key="pk_test_51N58QNFyhuvB1jEucfKtp23zYmVrLD5tsFDyrziGELCf8PU5VIfAx9WxYIjBFAy53wTPpS2GR5rVmRk4uPxZZhZr00oOHS1mWl"
+                                    data-amount="<%= total * 100 %>"
+                                    data-name="MercedesOfTheFuture"
+                                    data-description="Sale"
+                                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                    data-locale="auto"
+                                    data-label="PROCEED TO PAYMENT">
+                                </script>
+                            </form>
+                                
+                           
                             <div class="creat_account">
                                 <input type="checkbox" id="f-option4" name="selector">
                                 <label for="f-option4">I’ve read and accept the </label>
                                 <a href="mercedes-benz-General-Terms-and-Conditions-2022-10.pdf" download>terms & conditions*</a>
                             </div>
-                           <a class="primary-btn" href="/confirmation">Proceed to Checkout</a>
+                        
                             <!-- <a class="primary-btn" href="#">Proceed to Paypal</a> -->
                             
                         </div>

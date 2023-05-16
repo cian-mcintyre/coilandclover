@@ -18,7 +18,13 @@ const app = express();
 const User = require('./models/users');
 const Admin = require('./models/admins');
 const Car = require('./models/cars');
+const Order = require('./models/orders');
+
 const nodemailer = require('nodemailer');
+const stripe = require('stripe')('sk_test_51N58QNFyhuvB1jEuzI3qwwrWyHkFmAccpAtapmaQI4NFnwJwbnUJgJCYZUWIrctQnQnLtCxE1CVHbb1Xmck4kLGD00IKKhSxyx');
+var bodyParser = require('body-parser');
+const router = express.Router();
+
 
 //app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -46,17 +52,20 @@ app.use(flash())
 app.use(session({
     secret: secret,
     resave: false, // We wont resave the session variable if nothing is changed
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false } // set to true if using HTTPS
 }))
 app.use(passport.initialize()) 
 app.use(passport.session('connect.sid'))
 app.use(methodOverride("_method"))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
 // VIEW ENGINE
 
 app.set('view engine', 'ejs')
+app.set('views', __dirname + '/views');
 
 //SET PUBLIC FOLDER
 
@@ -244,7 +253,19 @@ app.get('/cart', async (req, res) => {
   res.render('pages/cart', { cartItems });
 });
 
+router.post('/add-to-cart/:id', function(req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
 
+  Product.findById(productId, function(err, product) {
+    if (err) {
+      return res.redirect('/');
+    }
+    cart.add(product, product.id);
+    req.session.cart = cart; // Store the cart in session variable
+    res.redirect('/');
+  });
+});
 
 
 
@@ -258,14 +279,92 @@ app.get('/category', (req, res) => {
     })
    });
 
+
+
+
+   
+// Route to handle filtering requests
+router.get('/cars', async (req, res) => {
+  const category = req.query.category; // Get the selected category from the query parameter
+  const cars = await Car.find({ category: category }); // Get the cars that match the selected category
+  res.json(cars); // Send the filtered cars as a JSON response
+});
+   
+module.exports = router;
+
 // CHECKOUT
 
+
 app.get('/checkout', (req, res) => {
+
+
+  // Calculate total
+  let cartItems = req.session.cart || [];
   const shippingCost = req.query.shipping;
-  const subtotal = req.query.subtotal
-  res.render('pages/checkout', { shippingCost, subtotal });
+  const subtotal = req.query.subtotal;
+  const total = parseFloat(shippingCost) + parseFloat(subtotal);
+
+  // Render checkout page with all necessary variables
+  res.render('pages/checkout', { cartItems, subtotal, shippingCost, total });
+});
+
+
+app.post('/charge', function(req, res) {
+  var total = req.body.total; // retrieve total value from form data
+  stripe.charges.create({
+    amount: total,
+    currency: 'eur',
+    source: req.body.stripeToken,
+    description: 'Mercedes Sale'
+  }, function(err, charge) {
+    if (err) {
+      console.error(error);
+      res.status(500).send('An error occurred while processing the payment');
+    } else {
+      res.redirect('/confirmation');
+    }
+  });
 });
     
+
+const shortid = require('shortid');
+
+
+app.post('/orders', (req, res) => {
+  let newOrder = new Order({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    orderNumber: shortid.generate(),
+    trackingNumber: shortid.generate(),
+    total: req.body.total,
+    cartItems: []
+  });
+
+  // Parse cart items from request body
+  if (req.body.cartItem) {
+    req.body.cartItem.forEach(function(item) {
+      let parts = item.split('|');
+      newOrder.cartItems.push({
+        name: parts[0],
+        price: parts[1]
+      });
+    });
+  }
+
+  newOrder.save((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error saving order');
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
+
+  
+
+
 
 // COMING SOON
 
@@ -366,6 +465,18 @@ app.get('/login', (req, res) => {
       });
 
 
+
+// PREOWNED
+
+app.get('/preowned', (req, res) => {
+  res.render('pages/preowned');
+  });
+
+
+  
+  
+
+
 // REGISTER
 
 app.get('/registration', (req, res) => {
@@ -449,7 +560,7 @@ app.get('/single-product-cla', (req, res) => {
     });
 
 
-       //logout
+       //logout 
   app.get('/logout', function (req, res) {
     res.clearCookie('connect.sid');
     res.redirect('/');

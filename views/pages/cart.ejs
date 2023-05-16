@@ -269,6 +269,10 @@
 
                                 </td>
                                 <td>
+                                    <% for (const cartItem of cartItems) { %>
+                                        <input type="hidden" name="productNames[]" value="<%= cartItem.product.productName %>">
+                                      <% } %>
+
                                     <input type="hidden" name="subtotal" value="<%= subtotal %>">
                                     <div class="checkout_btn_inner d-flex align-items-center">
                                         <button type="submit" class="primary-btn"> Proceed to Checkout</button>

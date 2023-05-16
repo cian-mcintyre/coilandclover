@@ -119,6 +119,33 @@
 		</div>
 	</section>
 	<!-- End Banner Area -->
+
+
+	<script>
+		const filterBtn = document.getElementById('filterBtn');
+
+filterBtn.addEventListener('click', () => {
+  // Get the selected color
+  const selectedColor = document.querySelector('input[name="colour"]:checked').value;
+
+  // Filter the cars by color
+  const filteredCars = document.querySelectorAll(`[data-color="${selectedColor}"]`);
+
+  // Hide all cars
+  const allCars = document.querySelectorAll('[data-color]');
+  allCars.forEach(car => {
+    car.style.display = 'none';
+  });
+
+  // Show the filtered cars
+  filteredCars.forEach(car => {
+    car.style.display = 'block';
+  });
+});
+	
+		</script>
+
+
 	<div class="container">
 		<div class="row">
 			<div class="col-xl-3 col-lg-4 col-md-5">
@@ -147,19 +174,27 @@
 						
 					</ul>
 				</div>
+
+
 				<div class="sidebar-filter mt-50">
 					<div class="top-filter-head">Product Filters</div>
-					<div class="common-filter">
-						<div class="head">Colour</div>
+					
+					<div class="head">Colour</div>
 						<form action="#">
 							<ul>
-								<li class="filter-list"><input class="pixel-radio" type="radio" id="apple" name="brand"><label for="apple">Red<span>(1)</span></label></li>
-								<li class="filter-list"><input class="pixel-radio" type="radio" id="asus" name="brand"><label for="asus">Black<span>(1)</span></label></li>
-								<li class="filter-list"><input class="pixel-radio" type="radio" id="gionee" name="brand"><label for="gionee">Blue<span>(1)</span></label></li>
+							<% let colors = {}; %>
+							<% carsList.forEach(car => { %>
+								<% colors[car.colour] = (colors[car.colour] || 0) + 1; %>
+							<% }); %>
+							<% for (let color in colors) { %>
+								<li class="filter-list">
+									<input class="pixel-radio" type="radio" id="<%= color %>" name="colour" value="<%= color %>">
+									<label for="<%= color %>"><%= color %><span>(<%= colors[color] %>)</span></label>
+								</li>
+							<% } %>
 							</ul>
 						</form>
-					</div>
-					
+
 					<div class="common-filter">
 						<div class="head">Price</div>
 						<div class="price-range-area">
@@ -174,6 +209,7 @@
 							</div>
 						</div>
 					</div>
+					<button id="filterBtn" type="button" class="primary-btn">FILTER</button>
 				</div>
 			</div>
 			<div class="col-xl-9 col-lg-8 col-md-7">
@@ -202,16 +238,16 @@
 				</div>
 				<!-- End Filter Bar -->
 				<!-- Start Best Seller -->
-				<section class="lattest-product-area pb-40 category-list">
+				<section id="carsListSection" class="lattest-product-area pb-40 category-list">
 					<div class="row">
 						<!-- single product -->
 						<%carsList.forEach(car => { %>
-						<div class="col-lg-4 col-md-6">
+						<div class="col-lg-4 col-md-6" >
 							<div class="single-product">
 								<a href="<%= car.Page %>">
 								<img class="img-fluid" src="../../public/img/product/<%= car.image %>" alt="">
 							</a>
-								<div class="product-details">
+								<div class="product-details" data-color="<%= car.colour %>">
 									<h6> <%= car.productName %> </h6>
 									<div class="price">
 										<h6>€<%= car.Price %></h6>
