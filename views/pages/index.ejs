@@ -527,13 +527,37 @@
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
-                        <h6>Follow Us</h6>
-                        <p>Let us be social</p>
-                        <div class="footer-social d-flex align-items-center">
-                            <a href="https://www.facebook.com/MercedesBenzIreland/"><i class="fa fa-facebook"></i></a>
-                            <a href="https://twitter.com/MB_IRELAND"><i class="fa fa-twitter"></i></a>
-                        </div>
-                    </div>
+						<h6>Mercedes Stock Price</h6>
+						<p id="stock-price">Loading...</p>
+						<p id="stock-change">Loading...</p>
+					</div>
+					<script>
+						// fetch stock data
+						function fetchStockData() {
+						  fetch('/stock-price')
+							.then(response => response.json())
+							.then(data => {
+							  // Find the elements to display the stock price and change
+							  var stockElement = document.getElementById('stock-price');
+							  var changeElement = document.getElementById('stock-change');
+							  // Set the text content of the elements to the stock price and change
+							  stockElement.textContent = 'Mercedes stock price: ' + data.price;
+							  changeElement.textContent = 'Change: ' + data.changePercent;
+							  if (data.changePercent.startsWith('-')) {
+								changeElement.innerHTML += ' <i class="fa fa-arrow-down" style="color:red;"></i>';
+							  } else {
+								changeElement.innerHTML += ' <i class="fa fa-arrow-up" style="color:green;"></i>';
+							  }
+							});
+						}
+					
+						// call the function to fetch the stock data
+						fetchStockData();
+					</script>
+					
+                        
+						  
+                        
                 </div>
             </div>
             <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">

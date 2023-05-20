@@ -63,6 +63,7 @@ app.use(methodOverride("_method"))
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+require('dotenv').config();
 
 // VIEW ENGINE
 
@@ -102,6 +103,26 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.cartItemCount = 0;
   next();
+});
+
+
+//Stock price available in all routes
+
+app.get('/stock-price', function(req, res){
+  const axios = require('axios');
+
+  axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DAI.DE&apikey=' + process.env.MERCEDES_STOCK_API_KEY)
+  .then(response => {
+      let data = {
+          price: response.data["Global Quote"]["05. price"],
+          changePercent: response.data["Global Quote"]["10. change percent"]
+      };
+      res.send(data);
+  })
+  .catch(error => {
+      console.error(error);
+      res.status(500).send('Error fetching stock price.');
+  });
 });
 
 //ACCOUNT
