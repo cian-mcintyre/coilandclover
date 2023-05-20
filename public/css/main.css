@@ -5161,6 +5161,25 @@ label {
     .modal-message .modal-dialog .modal-content .modal-header p {
       display: block; }
 
+      /* The Homepage Modal  */
+      .modal {
+        display: none; /* Hidden by default */
+        position: absolute; /* Stay in place */
+        z-index: 1; /* Sit on top */
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 300px;
+        text-align: center;
+        position: relative;
+        bottom: 50px;
+    }
+    
+
 /* End Contact Success and error Area css
 ============================================================================================ */
 .footer-area {

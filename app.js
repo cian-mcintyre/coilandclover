@@ -19,11 +19,13 @@ const User = require('./models/users');
 const Admin = require('./models/admins');
 const Car = require('./models/cars');
 const Order = require('./models/orders');
-
 const nodemailer = require('nodemailer');
 const stripe = require('stripe')('sk_test_51N58QNFyhuvB1jEuzI3qwwrWyHkFmAccpAtapmaQI4NFnwJwbnUJgJCYZUWIrctQnQnLtCxE1CVHbb1Xmck4kLGD00IKKhSxyx');
 var bodyParser = require('body-parser');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'public/img/product' }); 
+
 
 
 //app.use(bodyParser.urlencoded({ extended: true }));
@@ -182,21 +184,19 @@ app.get('/admin',  (req, res) => {
       }
     });
 
-app.post("/admin", function(req, res){
-    let newCar = new Car({
-        productName: req.body.productName,
-        category: req.body.category,
-        colour: req.body.colour,
-        Quantity: req.body.Quantity,
-        Price: req.body.Price,
-        image: req.body.image
-            
-    });
-    
-    newCar.save();
-    res.redirect('/');
-
-})
+    app.post("/admin", upload.single('image'), function(req, res){
+      let newCar = new Car({
+          productName: req.body.productName,
+          category: req.body.category,
+          colour: req.body.colour,
+          Quantity: req.body.Quantity,
+          Price: req.body.Price,
+          image: req.file ? req.file.filename : ''
+      });
+      
+      newCar.save();
+      res.redirect('/');
+  });
 
 // CART ITEM COUNTER
 
@@ -308,6 +308,7 @@ app.get('/checkout', (req, res) => {
   res.render('pages/checkout', { cartItems, subtotal, shippingCost, total });
 });
 
+const shortid = require('shortid');
 
 app.post('/charge', function(req, res) {
   var total = req.body.total; // retrieve total value from form data
@@ -318,48 +319,55 @@ app.post('/charge', function(req, res) {
     description: 'Mercedes Sale'
   }, function(err, charge) {
     if (err) {
-      console.error(error);
+      console.error('Stripe charge creation failed:', err);
       res.status(500).send('An error occurred while processing the payment');
     } else {
-      res.redirect('/confirmation');
-    }
-  });
-});
-    
-
-const shortid = require('shortid');
-
-
-app.post('/orders', (req, res) => {
-  let newOrder = new Order({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    orderNumber: shortid.generate(),
-    trackingNumber: shortid.generate(),
-    total: req.body.total,
-    cartItems: []
-  });
-
-  // Parse cart items from request body
-  if (req.body.cartItem) {
-    req.body.cartItem.forEach(function(item) {
-      let parts = item.split('|');
-      newOrder.cartItems.push({
-        name: parts[0],
-        price: parts[1]
+      // Payment successful, now we can create the order.
+      let newOrder = new Order({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        number: req.body.number,
+        email: req.body.email,
+        add1: req.body.add1,
+        add2: req.body.add2,
+        city: req.body.city,
+        zip: req.body.zip,
+        createAccount: req.body.selector === "on",
+        message: req.body.message,
+        orderNumber: shortid.generate(),
+        trackingNumber: shortid.generate(),
+        total: req.body.total,
+        subtotal: req.body.subtotal,
+        shippingCost: req.body.shippingCost,
+        products: []
       });
+      
+      if (req.body.cartItem) {
+        req.body.cartItem.forEach(function(item) {
+          let parts = item.split('|');
+          newOrder.products.push({
+            name: parts[0],
+            price: parts[1],
+            quantity: parts[2] // Adjust this according to your logic.
+          });
+        });
+      }
+      
+      // Save the order
+      newOrder.save((err, savedOrder) => {
+        if (err) {
+          console.error('Order creation failed:', err);
+          res.status(500).send('Error saving order');
+        } else {
+          req.session.order = savedOrder; // Save order to session
+          res.redirect('/confirmation');
+        }
     });
-  }
-
-  newOrder.save((err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error saving order');
-    } else {
-      res.redirect('/');
     }
   });
 });
+
+
 
 
   
@@ -374,9 +382,15 @@ app.get('/coming-soon', (req, res) => {
 
 // CONFIRMATION
 
-app.get('/confirmation', (req, res) => {
-        res.render('pages/confirmation');
-        });
+app.get('/confirmation', function(req, res) {
+  if (req.session.order) {
+    res.render('pages/confirmation', { order: req.session.order });
+    delete req.session.order; // Clear the order from the session
+  } else {
+    res.redirect('/checkout'); // No order to confirm, redirect to checkout
+  }
+});
+
 
 
 // CONTACT

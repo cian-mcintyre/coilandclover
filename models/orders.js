@@ -5,7 +5,6 @@ const orderSchema ={
   orderNumber:{
     type: String,
   },
-  
   firstName: {
     type: String,
     required: true,
@@ -14,11 +13,40 @@ const orderSchema ={
     type: String,
     required: true,
   },
+  number: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  add1: {
+    type: String,
+  },
+  add2: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  zip: {
+    type: String,
+  },
+  createAccount: {
+    type: Boolean,
+  },
+  message: {
+    type: String,
+  },
   total: {
     type: Number,
     required: true,
   },
-
+  subtotal: {
+    type: Number,
+  },
+  shippingCost: {
+    type: Number,
+  },
   products: [
     {
       name: { type: String, required: true },
@@ -31,9 +59,8 @@ const orderSchema ={
     default: shortid.generate,
     unique: true
   }
-
-
 };
+
 
 const Order = mongoose.model('Order', orderSchema);
 

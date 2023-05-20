@@ -124,129 +124,98 @@
     <section class="checkout_area section_gap">
         <div class="container">
             
+        
+
+            <div class="col-lg-4">
+                <div class="order_box">
+                    <h2>Your Order</h2>
+                    
+                    <ul class="list list_2">
+                        <li><a href="#">Subtotal <span>€<%= subtotal %></span></a></li>
+                        <li><a href="#">Shipping <span>€<%= shippingCost %></span></a></li>
+                        <li><a href="#">Total <span>€<span id="total"></span></span></a></li>
+                        
+                        <script>
+                          var subtotal = <%= subtotal %>;
+                          var shippingCost = <%= shippingCost %>;
+                          var total = subtotal + shippingCost;
+                          document.getElementById("total").textContent = total.toFixed(2);
+                        </script>
+                      </ul>
+
+                      
+                      <p>Subtotal: €</p>
+
+                    </div>
+                </div>
+                <br>
+                        
             
             <div class="billing_details">
                 <div class="row">
                     <div class="col-lg-8">
                         <h3>Billing Details</h3>
-                        <form id="orderForm" class="row contact_form" action="/orders" method="post" novalidate="novalidate">
-                        
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name">
-                            <span class="placeholder"></span>
-                          </div>
-                          <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name">
-                            <span class="placeholder"></span>
-                          </div>
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
+                        <form id="orderForm" class="row contact_form" action="/charge" method="post">
+                            <div class="col-md-6 form-group p_star">
+                              <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" required>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number" placeholder="Phone number">
-                                <span class="placeholder"></span>
+                              <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" required>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email Address">
-                                <span class="placeholder"></span>
+                              <input type="tel" pattern="^\d{3}-\d{3}-\d{4}$" class="form-control" id="number" name="number" placeholder="Phone number" required>
+                              <small>Format: 123-456-7890</small>
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                              <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <select class="country_select">
-                                    <option value="1">Ireland</option>
-                                    <option value="2">United Kingdom</option>
-                                    <option value="4">USA</option>
-                                </select>
+                              <input type="text" class="form-control" id="add1" name="add1" placeholder="Address line 01" required>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add1" name="add1" placeholder="Address line 01">
-                                <span class="placeholder"></span>
+                              <input type="text" class="form-control" id="add2" name="add2" placeholder="Address line 02">
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add2" name="add2" placeholder="Address line 02">
-                                <span class="placeholder"></span>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="city" name="city" placeholder="City">
-                                <span class="placeholder"></span>
+                              <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="zip" name="zip" placeholder="Eircode">
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <div class="creat_account">
-                                    <input type="checkbox" id="f-option2" name="selector">
-                                    <label for="f-option2">Create an account?</label>
-                                </div>
+                              <input type="text" class="form-control" id="zip" name="zip" placeholder="Eircode" pattern="[A-Z0-9]{7}" required>
+                              <small>Format: D04C932</small>
                             </div>
                             <div class="col-md-12 form-group">
                                 <div class="creat_account">
                                     <h3>Shipping Details</h3>
-                                    <input type="checkbox" id="f-option3" name="selector">
-                                    <label for="f-option3">Ship to a different address?</label>
+                                    
                                 </div>
                                 <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
-                                <% if (Array.isArray(cartItems)) { %>
-                                    <% cartItems.forEach(function(item) { %>
-                                      <input type="hidden" name="cartItem[]" value="<%= item.name %>|<%= item.price %>">
-                                    <% }); %>
-                                  <% } %>
-                                <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
-                                <button type="submit" id="placeOrderBtn" class="btn btn-primary">PLACE ORDER</button>
-                            </div>
-                        </form>
+  <% if (Array.isArray(cartItems)) { %>
+    <% cartItems.forEach(function(item) { %>
+      <input type="hidden" name="cartItem[]" value="<%= item.name %>|<%= item.price %>">
+    <% }); %>
+  <% } %>
+  <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
+  <br>
+  <div class="creat_account">
+    <input type="checkbox" id="f-option4" name="selector">
+    <label for="f-option4">I’ve read and accept the </label>
+    <a href="mercedes-benz-General-Terms-and-Conditions-2022-10.pdf" download>terms & conditions*</a>
+</div>
+<br>
+  <script
+    src="https://checkout.stripe.com/checkout.js"
+    class="stripe-button"
+    data-key="pk_test_51N58QNFyhuvB1jEucfKtp23zYmVrLD5tsFDyrziGELCf8PU5VIfAx9WxYIjBFAy53wTPpS2GR5rVmRk4uPxZZhZr00oOHS1mWl"
+    data-amount="<%= total * 100 %>"
+    data-name="MercedesOfTheFuture"
+    data-description="Sale"
+    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+    data-locale="auto"
+    data-label="PROCEED TO PAYMENT">
+  </script>
+</form>
                     </div>
-
-
-
-
-
-
-                    <div class="col-lg-4">
-                        <div class="order_box">
-                            <h2>Your Order</h2>
                             
-                            <ul class="list list_2">
-                                <li><a href="#">Subtotal <span>€<%= subtotal %></span></a></li>
-                                <li><a href="#">Shipping <span>€<%= shippingCost %></span></a></li>
-                                <li><a href="#">Total <span>€<span id="total"></span></span></a></li>
-                                
-                                <script>
-                                  var subtotal = <%= subtotal %>;
-                                  var shippingCost = <%= shippingCost %>;
-                                  var total = subtotal + shippingCost;
-                                  document.getElementById("total").textContent = total.toFixed(2);
-                                </script>
-                              </ul>
-
-                              
-                              <p>Subtotal: €</p>
-
-                              <form action="/charge" method="post">
-                                <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
-                                <script
-                                    src="https://checkout.stripe.com/checkout.js"
-                                    class="stripe-button"
-                                    data-key="pk_test_51N58QNFyhuvB1jEucfKtp23zYmVrLD5tsFDyrziGELCf8PU5VIfAx9WxYIjBFAy53wTPpS2GR5rVmRk4uPxZZhZr00oOHS1mWl"
-                                    data-amount="<%= total * 100 %>"
-                                    data-name="MercedesOfTheFuture"
-                                    data-description="Sale"
-                                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                    data-locale="auto"
-                                    data-label="PROCEED TO PAYMENT">
-                                </script>
-                            </form>
-                                
-                           
-                            <div class="creat_account">
-                                <input type="checkbox" id="f-option4" name="selector">
-                                <label for="f-option4">I’ve read and accept the </label>
-                                <a href="mercedes-benz-General-Terms-and-Conditions-2022-10.pdf" download>terms & conditions*</a>
-                            </div>
-                        
-                            <!-- <a class="primary-btn" href="#">Proceed to Paypal</a> -->
-                            
-                        </div>
-                    </div>
+                      
                 </div>
             </div>
         </div>

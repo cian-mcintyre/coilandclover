@@ -31,6 +31,8 @@
 		<link rel="stylesheet" href="../../public/css/ion.rangeSlider.skinFlat.css" />
 		<link rel="stylesheet" href="../../public/css/magnific-popup.css">
 		<link rel="stylesheet" href="../../public/css/main.css">
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwCMbl5Yh4W1asShg1-eWN9MhniaZvNHk&callback=initMap"></script>
+		<script src="../../public/js/map.js"></script>
 	</head>
 
 <body>
@@ -123,9 +125,16 @@
 	<!--================Contact Area =================-->
 	<section class="contact_area section_gap_bottom">
 		<div class="container">
-			<div id="mapBox" class="mapBox" data-lat="53.323766" data-lon="-6.340310" data-zoom="13" data-info="PO Box CT16122 Collins Street West, Victoria 8007, Australia."
+			<!--<div id="mapBox" class="mapBox" data-lat="53.323766" data-lon="-6.340310" data-zoom="13" 
 			 data-mlat="40.701083" data-mlon="-74.1522848">
-			</div>
+			</div>-->
+			<div id="mapBox" class ="mapBox" style="height: 400px; width: 100%;"></div>
+
+
+			
+
+
+
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="contact_info">
@@ -213,6 +222,7 @@
                             <div class="info"></div>
                         </form>
                     </div>
+
                 </div>
             </div>
             <div class="col-lg-3  col-md-6 col-sm-6">
@@ -264,6 +274,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 <script src="../../public/js/gmaps.min.js"></script>
 <script src="../../public/js/main.js"></script>
+
+
+			
 </body>
 
 </html>

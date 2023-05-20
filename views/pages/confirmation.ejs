@@ -129,9 +129,10 @@
 					<div class="details_item">
 						<h4>Order Info</h4>
 						<ul class="list">
-							<li><span>Order Number: </span><p>8726388</p></li>
+							<li><span>Order Number: </span><p><%= order.orderNumber %></p></li>
+							<li><span>Tracking Number: </span><p><%= order.trackingNumber %></p></li>
 							<li><span>Date: <p id="date"></p></span></li>
-							<li><span>Payment method: </span>PayPal</a></li>
+							<li><span>Total: </span>€<%= order.total %></a></li>
 						</ul>
 					</div>
 				</div>

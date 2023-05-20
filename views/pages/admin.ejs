@@ -119,7 +119,7 @@
 <div class="col-lg-6 mx-auto">
     <div class="login_form_inner">
         <h3>Log in to enter</h3>
-        <form class="row login_form" action="/admin" method="post" id="contactForm" novalidate="novalidate">
+        <form class="row login_form" action="/admin" method="post" id="contactForm" enctype="multipart/form-data" novalidate="novalidate">
             <div class="col-md-12 form-group">
                 <input type="text" class="form-control" id="productName" name="productName" placeholder="Car Title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Car Title'">
             </div>
@@ -145,7 +145,8 @@
                 <input type="text" class="form-control" id="Price" name="Price" placeholder="Price" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Price'">
             </div>
             <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="image" name="image" placeholder="Image name (eg, p5.jpg)" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Price'">
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <small>Image should be 1:1 aspect ratio</small>
             </div>
             <div class="col-md-12 form-group">
                 <button type="submit" value="submit" class="primary-btn">Add car</button>

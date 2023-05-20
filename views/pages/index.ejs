@@ -305,13 +305,15 @@
 								</div>
 								<div class="prd-bottom">
 									<div class="generic-btn">
-									<form action="/add-to-cart" method="POST">
-										<input type="hidden" name="productId" value="<%= car._id %>">
-										<button type="submit" class="primary-btn">Add to Bag</button>
-									  </form>
-									  <br>
-									</div>
+										<form class="add-to-cart-form" action="/add-to-cart" method="POST">
+										  <input type="hidden" name="productId" value="<%= car._id %>">
+										  <button type="submit" class="primary-btn">Add to Bag</button>
+										</form>
+										<br>
+									  </div>
 									  
+								
+ 
 					
 									<a href="#" class="social-info">
 										<span class="lnr lnr-heart"></span>
@@ -333,13 +335,18 @@
 
 					
 					<%})%>
-					
-					
+
+	
+	
+	  
                    
 					
 				</div>
 			</div>
+			
 		</div>
+
+				
 		<!-- single product slide -->
 		<div class="single-product-slider">
 			<div class="container">
