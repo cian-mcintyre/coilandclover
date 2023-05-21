@@ -531,29 +531,8 @@
 						<p id="stock-price">Loading...</p>
 						<p id="stock-change">Loading...</p>
 					</div>
-					<script>
-						// fetch stock data
-						function fetchStockData() {
-						  fetch('/stock-price')
-							.then(response => response.json())
-							.then(data => {
-							  // Find the elements to display the stock price and change
-							  var stockElement = document.getElementById('stock-price');
-							  var changeElement = document.getElementById('stock-change');
-							  // Set the text content of the elements to the stock price and change
-							  stockElement.textContent = 'Mercedes stock price: ' + data.price;
-							  changeElement.textContent = 'Change: ' + data.changePercent;
-							  if (data.changePercent.startsWith('-')) {
-								changeElement.innerHTML += ' <i class="fa fa-arrow-down" style="color:red;"></i>';
-							  } else {
-								changeElement.innerHTML += ' <i class="fa fa-arrow-up" style="color:green;"></i>';
-							  }
-							});
-						}
 					
-						// call the function to fetch the stock data
-						fetchStockData();
-					</script>
+					
 					
                         
 						  
@@ -584,6 +563,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="../../public/js/gmaps.min.js"></script>
 	<script src="../../public/js/main.js"></script>
+	<script src="../../public/js/stock.js"></script>
 </body>
 
 </html>

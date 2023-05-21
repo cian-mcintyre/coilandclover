@@ -33,7 +33,9 @@ const upload = multer({ dest: 'public/img/product' });
 
 // MONGODB CONNECTION
 
-mongoose.connect('mongodb+srv://cianmcintyre:s6e%40N4LDwL%40E2e9@cluster0.awwykbo.mongodb.net/products', {useNewUrlParser: true}, {useUnifiedTopology:true})
+const uri = process.env.MONGODB_URI;
+
+mongoose.connect(uri, {useNewUrlParser: true}, {useUnifiedTopology:true})
 .then(()=>{
     console.log("MongoDB connected");
 })
@@ -61,9 +63,6 @@ app.use(passport.initialize())
 app.use(passport.session('connect.sid'))
 app.use(methodOverride("_method"))
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
-require('dotenv').config();
 
 // VIEW ENGINE
 
@@ -609,8 +608,7 @@ app.get('/single-product-cla', (req, res) => {
 
 // INIT SERVER
 
-app.listen(80, function(){
-    console.log('server is running on port 80');
-});
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
