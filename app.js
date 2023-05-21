@@ -36,12 +36,9 @@ const upload = multer({ dest: 'public/img/product' });
 const uri = process.env.MONGODB_URI;
 
 mongoose.connect(uri, {useNewUrlParser: true}, {useUnifiedTopology:true})
-.then(()=>{
-    console.log("MongoDB connected");
-})
-.catch(()=>{
-    console.log("failed to connect");
-})
+  .then(() => console.log('MongoDB Connected...'))
+  .catch(err => next(err)); 
+
 
 //PASSPORT
 
@@ -603,6 +600,13 @@ app.get('/single-product-cla', (req, res) => {
     //END ROUTES
 
  
+// ERROR HANDLING
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
+
     
     
 
