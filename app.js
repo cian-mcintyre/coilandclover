@@ -20,7 +20,7 @@ const Admin = require('./models/admins');
 const Car = require('./models/cars');
 const Order = require('./models/orders');
 const nodemailer = require('nodemailer');
-const stripe = require('stripe')('sk_test_51N58QNFyhuvB1jEuzI3qwwrWyHkFmAccpAtapmaQI4NFnwJwbnUJgJCYZUWIrctQnQnLtCxE1CVHbb1Xmck4kLGD00IKKhSxyx');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 var bodyParser = require('body-parser');
 const router = express.Router();
 const multer = require('multer');
@@ -612,7 +612,7 @@ app.use(function (err, req, res, next) {
 
 // INIT SERVER
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
