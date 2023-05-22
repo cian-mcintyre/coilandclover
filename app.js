@@ -499,9 +499,46 @@ app.get('/login', (req, res) => {
 
 // PREOWNED
 
-app.get('/preowned', (req, res) => {
-  res.render('pages/preowned');
+
+
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+//app.get('/preowned', async (req, res) => {
+  //const url = "https://www.donedeal.ie/cars/Mercedes-Benz"; // The website you're scraping from
+  //const { data } = await axios.get(url);
+  //const $ = cheerio.load(data);
+
+  //const ddcars = [];
+
+  // Assume the website has .car elements each containing a title and a price
+  //$('.Listings__List-sc-1igquny-0 dlRLLo').each((i, elem) => {
+  //  const title = $(elem).find('.Card__Title-sc-1v41pi0-4 duHUaw').text();
+  //  const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13 jDzR').text();
+
+ //   ddcars.push({ title, price });
+ // });
+
+ // res.render('pages/preowned', { cars: ddcars });
+//});
+
+app.get('/preowned', async (req, res) => {
+  const url = 'https://thegreatestbooks.org/';
+
+  const { data } = await axios.get(url);
+  const $ = cheerio.load(data);
+
+  const books = [];
+
+  $('ol li .item pb').each((i, elem) => {
+    const title = $(elem).find('.title a').text();
+    const author = $(elem).find('.author a').text();
+
+    books.push({ title, author });
   });
+
+  res.render('pages/preowned', { books: books });
+});
 
 
   
