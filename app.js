@@ -495,15 +495,10 @@ app.get('/login', (req, res) => {
         }
       });
 
-
-
-// PREOWNED
-
-
-
-
   
 // PREOWNED
+
+// Donedeal
 
 const axios = require('axios');
 const cheerio = require('cheerio');
@@ -515,10 +510,12 @@ app.get('/preowned', async (req, res) => {
   const $ = cheerio.load(data);
 
   const cars = [];
-  $('ul[data-testid="card-list"] > li').each((i, elem) => {
+  $('li.Listings__Desktop-sc-1igquny-3').each((i, elem) => {
 
     const title = $(elem).find('.Card__Body-sc-1v41pi0-8 .Card__Title-sc-1v41pi0-4').text().trim();
-    const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13').text().trim();
+    const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13').text().trim().replace(/(€)/g, function (match, p1, offset) {
+      return offset > 0 ? " / " + p1 : p1;
+    });
     const details = $(elem).find('.Card__KeyInfoList-sc-1v41pi0-6 li');
     const year = $(details).eq(0).text().trim();
     const fuelType = $(details).eq(1).text().trim();
@@ -534,6 +531,38 @@ app.get('/preowned', async (req, res) => {
 
   res.render('pages/preowned', { cars: cars });
 });
+
+//Carzone
+
+app.get('/preownedcarzone', async (req, res) => {
+  const carzoneUrl = 'https://www.carzone.ie/used-cars/mercedes-benz';
+
+  const carzoneData = await axios.get(carzoneUrl, {
+    headers: {
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
+    }
+  });
+  const $carzone = cheerio.load(carzoneData.data);
+
+  const carzoneCars = [];
+  $carzone('stock-summary-item_ngcontent-cz-web-c137').each((i, elem) => {
+
+    const title = _$(elem).find('h3.t-plum').text().trim();
+    const price = _$(elem).find('.cz-price span.ng-star-inserted span').text().trim();
+    const details = _$(elem).find('.stock-summary_features_details strong').text().trim().split("•");
+    const year = details[0].trim();
+    const mileage = details[1].trim();
+    const fuelType = details[2].trim();
+    const link = _$(elem).find('a.no-decoration').attr('href');
+
+    // Note that not all information is available in the Carzone listings
+    carzoneCars.push({ title, price, year, fuelType, mileage, link, source: 'Carzone' });
+  });
+
+  res.render('pages/preownedcarzone', { carzoneCars: carzoneCars });
+});
+
 
 // REGISTER
 
