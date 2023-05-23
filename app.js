@@ -501,49 +501,39 @@ app.get('/login', (req, res) => {
 
 
 
+
+  
+// PREOWNED
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-//app.get('/preowned', async (req, res) => {
-  //const url = "https://www.donedeal.ie/cars/Mercedes-Benz"; // The website you're scraping from
-  //const { data } = await axios.get(url);
-  //const $ = cheerio.load(data);
-
-  //const ddcars = [];
-
-  // Assume the website has .car elements each containing a title and a price
-  //$('.Listings__List-sc-1igquny-0 dlRLLo').each((i, elem) => {
-  //  const title = $(elem).find('.Card__Title-sc-1v41pi0-4 duHUaw').text();
-  //  const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13 jDzR').text();
-
- //   ddcars.push({ title, price });
- // });
-
- // res.render('pages/preowned', { cars: ddcars });
-//});
-
 app.get('/preowned', async (req, res) => {
-  const url = 'https://thegreatestbooks.org/';
+  const url = 'https://www.donedeal.ie/cars/Mercedes-Benz';
 
   const { data } = await axios.get(url);
   const $ = cheerio.load(data);
 
-  const books = [];
+  const cars = [];
+  $('ul[data-testid="card-list"] > li').each((i, elem) => {
 
-  $('ol li .item pb').each((i, elem) => {
-    const title = $(elem).find('.title a').text();
-    const author = $(elem).find('.author a').text();
+    const title = $(elem).find('.Card__Body-sc-1v41pi0-8 .Card__Title-sc-1v41pi0-4').text().trim();
+    const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13').text().trim();
+    const details = $(elem).find('.Card__KeyInfoList-sc-1v41pi0-6 li');
+    const year = $(details).eq(0).text().trim();
+    const fuelType = $(details).eq(1).text().trim();
+    const mileage = $(details).eq(2).text().trim();
+    const timePosted = $(details).eq(3).text().trim();
+    const location = $(details).eq(4).text().trim();
+    const link = $(elem).find('a.Link__SLinkButton-sc-9jmsfg-0').attr('href');
 
-    books.push({ title, author });
+
+    cars.push({ title, price, year, fuelType, mileage, timePosted, location, link });
+
   });
 
-  res.render('pages/preowned', { books: books });
+  res.render('pages/preowned', { cars: cars });
 });
-
-
-  
-  
-
 
 // REGISTER
 
@@ -577,6 +567,7 @@ app.post("/registration", async (req, res) => {
         res.redirect("/registration")
     }
 })
+
 
 
 

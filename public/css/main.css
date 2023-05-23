@@ -444,6 +444,8 @@ h1, h2, h3, h4, h5, h6 {
         .progress-table .table-row .percentage .progress .progress-bar.color-8 {
           background-color: #e66686; }
 
+         
+
 .single-gallery-image {
   margin-top: 30px;
   background-repeat: no-repeat !important;
@@ -455,8 +457,22 @@ h1, h2, h3, h4, h5, h6 {
   width: 14px;
   height: 14px; }
 
+.book-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px; /* Change as required */
+   
+
+}
+
+.book-title{
+  padding: 100px;
+}
+
 .unordered-list li {
   position: relative;
+  width: 100%;
   padding-left: 30px;
   line-height: 1.82em !important; }
   .unordered-list li:before {
