@@ -56,6 +56,12 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: false } // set to true if using HTTPS
 }))
+
+app.use((req, res, next) => {
+  res.locals.error_messages = req.flash('error_messages');
+  next();
+});
+
 app.use(passport.initialize()) 
 app.use(passport.session('connect.sid'))
 app.use(methodOverride("_method"))
@@ -325,6 +331,7 @@ app.get('/checkout', (req, res) => {
   res.render('pages/checkout', { cartItems, subtotal, shippingCost, total });
 });
 
+
 const shortid = require('shortid');
 
 app.post('/charge', function(req, res) {
@@ -358,7 +365,7 @@ app.post('/charge', function(req, res) {
         shippingCost: req.body.shippingCost,
         products: []
       });
-      
+
       if (req.body.cartItem) {
         req.body.cartItem.forEach(function(item) {
           let parts = item.split('|');
@@ -369,18 +376,46 @@ app.post('/charge', function(req, res) {
           });
         });
       }
-      
-      // Save the order
-      newOrder.save((err, savedOrder) => {
-        if (err) {
-          console.error('Order creation failed:', err);
-          res.status(500).send('Error saving order');
+
+      // Validate the order
+      newOrder.validate(function(error) {
+        if (error) {
+            const errors = Object.values(error.errors).map((err) => err.message);
+            req.flash('error_messages', errors); // save error messages in flash
+            res.redirect('/checkout'); // redirect back to the checkout page
         } else {
-          req.session.order = savedOrder; // Save order to session
-          res.redirect('/confirmation');
+            // Save the order
+            newOrder.save((err, savedOrder) => {
+                if (err) {
+                  console.error('Order creation failed:', err);
+                  res.status(500).send('Error saving order');
+                } else {
+                  req.session.order = savedOrder; // Save order to session
+                  res.redirect('/confirmation');
+                }
+            });
         }
     });
+
     }
+  });
+});
+
+app.post('/validate-order', (req, res) => {
+  // create new order instance with provided form data
+  let newOrder = new Order(req.body);
+
+  // validate the new order instance
+  newOrder.validate(function(error) {
+      if (error) {
+          // extract error messages
+          const errors = Object.values(error.errors).map((err) => err.message);
+          // return error messages
+          res.status(400).json({ errors });
+      } else {
+          // return successful validation
+          res.status(200).json({ success: true });
+      }
   });
 });
 

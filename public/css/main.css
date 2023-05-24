@@ -5206,6 +5206,12 @@ label {
         bottom: 50px;
     }
     
+    .error {
+      border: 1px solid red !important;
+  }
+  .error-message {
+    color: red;
+}
 
 /* End Contact Success and error Area css
 ============================================================================================ */
