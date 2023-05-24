@@ -30,8 +30,17 @@
 		<link rel="stylesheet" href="../../public/css/ion.rangeSlider.skinFlat.css" />
 		<link rel="stylesheet" href="../../public/css/magnific-popup.css">
 		<link rel="stylesheet" href="../../public/css/main.css">
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+			<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+			
+			
+  
+			
+			
+
+			
 </head>
 
 <body>
@@ -127,37 +136,46 @@
 
 <body style="text-align: center;">
     <h1 style="padding-top: 100px;">Car Listings</h1>
-    <table id="carTable" style="width: 80%; margin: 30px auto; border-collapse: collapse; color: black;">
-        <tr style="background-color: #f2f2f2; ">
-            <th style="padding: 10px; border: 1px solid #dddddd;">Title</th>
-            <th style="padding: 10px; border: 1px solid #dddddd;">Price</th>
-            <th style="padding: 10px; border: 1px solid #dddddd;">Year</th>
-            <th style="padding: 10px; border: 1px solid #dddddd;">Fuel Type</th>
-            <th style="padding: 10px; border: 1px solid #dddddd;">Mileage</th>
-            <th style="padding: 10px; border: 1px solid #dddddd;">Time Posted</th>
-            <th style="padding: 10px; border: 1px solid #dddddd;">Location</th>
-			<th style="padding: 10px; border: 1px solid #dddddd;">Link</th>
-        </tr>
-        <% cars.forEach(function(car){ %>
-        <tr>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.title %></td>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.price %></td>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.year %></td>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.fuelType %></td>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.mileage %></td>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.timePosted %></td>
-            <td style="padding: 10px; border: 1px solid #dddddd;"><%= car.location %></td>
-			<td style="padding: 10px; border: 1px solid #dddddd;"><a href="<%= car.link %>" target="_blank" rel="noopener noreferrer">DoneDeal</a></td>
-        </tr>
-        <% }); %>
-    </table>
-
+	<div style="width: 80%; margin: 30px auto; padding-bottom: 10px;">
+    <table id="myTable" style="width: 100%; margin: 30px auto; border-collapse: collapse; color: black;">
+		<thead>
+			<tr style="background-color: #f2f2f2;">
+				<th style="padding: 10px; border: 1px solid #dddddd;">Title</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Price</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Year</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Fuel Type</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Mileage</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Time Posted</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Location</th>
+				<th style="padding: 10px; border: 1px solid #dddddd;">Link</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% cars.forEach(function(car){ %>
+			<tr style="color:white">
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.title %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.price %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.year %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.fuelType %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.mileage %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.timePosted %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.location %></td>
+				<td style="padding: 10px; border: 1px solid #dddddd;"><a href="<%= car.link %>" target="_blank" rel="noopener noreferrer">DoneDeal</a></td>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</div>
+	
 	<script>
 		$(document).ready(function() {
-			$('#carTable').DataTable();
-				
+			$('#myTable').DataTable({
+				"pageLength": 30,
+				"lengthChange": false
+			});
 		});
-		</script>
+	</script>
+	
 		
 </body>
 
@@ -241,9 +259,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
     </div>
 </footer>
 <!-- End footer Area -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!--<script src="../../public/js/vendor/jquery-2.2.4.min.js"></script>-->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
  crossorigin="anonymous"></script>
 <script src="../../public/js/vendor/bootstrap.min.js"></script>
