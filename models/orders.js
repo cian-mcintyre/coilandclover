@@ -74,7 +74,8 @@ const orderSchema ={
     type: String,
     default: shortid.generate,
     unique: true
-  }
+  },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 };
 
 

@@ -118,63 +118,91 @@
         </section>
         <!-- End Banner Area -->
 
-        <div class="container">
-            <div class="row">
-              
-<div class="col-lg-6">
-    <div class="login_form_inner">
-        <h3>Edit your details</h3>
-        <% if (messages.success) { %>
-            <div class="alert alert-success">
-              <%= messages.success %>
+<section>
+    <div class="container">
+        <div class="row">
+                
+            <div class="col-lg-6">
+                <div class="login_form_inner">
+                    <h3>Edit your details</h3>
+                    <% if (messages.success) { %>
+                        <div class="alert alert-success">
+                        <%= messages.success %>
+                        </div>
+                        <% } else if (messages.error) { %>
+                        <div class="alert alert-danger">
+                        <%= messages.error %>
+                        </div>
+                        <% } %>
+                        <form class="row login_form" method="POST" action="/account">
+                            <div class="col-md-12 form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" value="<%= user.firstName %>">
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>">
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>">
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                            <input type="submit" class="primary-btn" value="Save Changes">
+                            </div>
+                        </form>  
+                </div>
             </div>
-          <% } else if (messages.error) { %>
-            <div class="alert alert-danger">
-              <%= messages.error %>
+
+            <div class="col-sm-6">
+                <div class="register_box_img">
+                    <img class="img-fluid" style="padding-top:50px" src="../../public/img/account_img.png" alt="">
+                </div>
             </div>
-          <% } %>
-        <form class="row login_form" method="POST" action="/account">
-            <div class="col-md-12 form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" value="<%= user.firstName %>">
         </div>
 
-            <div class="col-md-12 form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>">
+        <div class="orders">
+            <% if (orders.length > 0) { %>
+                <h2>Your Orders:</h2>
+            <% } else { %>
+                <p>You have no orders.</p>
+            <% } %>
+            <table class="order-table">
+            <thead>
+                <tr class="order-tr">
+                <th class="order-th">Order Number</th>
+                <th class="order-th">Total Price</th>
+                <th class="order-th">Tracking Number</th>
+                <th class="order-th">Products</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(function(order) { %>
+                <tr class="order-tr">
+                    <td class="order-td"><%= order.orderNumber %></td>
+                    <td class="order-td">€<%= order.total %></td>
+                    <td class="order-td">€<%= order.trackingNumber %></td>
+                    <td class="order-td"><%= order._id.products %></td> <!-- Replace with actual date field if available -->
+                </tr>
+                <% }) %>
+            </tbody>
+            </table>
         </div>
-
-            <div class="col-md-12 form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>">
-        </div>
-
-            <div class="col-md-12 form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
-        </div>
-
-            <div class="col-md-12 form-group">
-            <input type="submit" class="primary-btn" value="Save Changes">
-            </div>
-          </form>
-        </form>
     </div>
-</div>
-
-<div class="col-sm-6">
-    <div class="register_box_img">
-    <img class="img-fluid" style="padding-top:50px" src="../../public/img/account_img.png" alt="">
-</div>
-</div>
-</div>
-</div>
-
-</body>
+  
+</section>
 
 <!-- start footer Area -->
 <footer class="footer-area section_gap">
-    <div class="container">
+    
         <div class="row">
             <div class="col-lg-3  col-md-6 col-sm-6">
                 <div class="single-footer-widget">
@@ -236,15 +264,15 @@
                             <p id="stock-change">Loading...</p>
                         </div>
                        
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+                <p class="footer-text m-0">
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+                </p>
+            </div>
         </div>
-        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-            <p class="footer-text m-0">
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
-</p>
-        </div>
-    </div>
 </footer>
 <!-- End footer Area -->
 

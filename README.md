@@ -29,6 +29,20 @@ Admin:
 
 
 
+Main routes: 
+/account route: It displays and updates user account details.
+/add-to-cart and /remove-from-cart routes: They manage products in the shopping cart.
+/cart route: It displays the cart items.
+/checkout route: It handles the checkout process.
+/charge route: It handles the payment process using Stripe.
+/validate-order route: It validates the new order data.
+/confirmation route: It confirms the order.
+/ route: It displays the homepage with a list of cars.
+/login route: It handles user login.
+/registration route: It handles user registration.
+/logout route: It handles user logout.
+
+
 Images generated using Midjourney
 
 Original UI using Karma Template: https://preview.colorlib.com/#karma 
@@ -53,4 +67,12 @@ Preowned section showing used cars from DoneDeal, CarZone etc
 Better form validation for address and mobile numbers (Address search)
 
 GDPR consideration for customer data (User is deleted if no order is placed in X time etc) 
+
+
+Learnings: 
+Simpler user journeys - The log in should be at the Add to cart stage, not at order stage.
+Google pay implementation 
+Country search 
+Mobile phone search
+
 

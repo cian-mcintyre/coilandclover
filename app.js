@@ -130,38 +130,44 @@ app.get('/stock-price', function(req, res){
 //ACCOUNT
 
 app.get('/account', (req, res) => {
-    if (req.session && req.session.userId) {
-        User.findById(req.session.userId, (err, user) => {
-          if (err) {
-            console.log(err);
-          } else {
-            res.render('pages/account', { user: user });
-          }
-        });
-      } else {
-        res.redirect('/login');
-      }
-    });
+  if (req.session && req.session.userId) {
+      User.findById(req.session.userId)
+          .populate('orders')
+          .exec((err, user) => {
+              if (err) {
+                  console.log(err);
+                  res.redirect('/login'); // Optionally redirect to login if there's an error
+              } else {
+                  res.render('pages/account', { user: user, orders: user.orders });
+              }
+          });
+  } else {
+      res.redirect('/login');
+  }
+});
 
 app.post('/account', async (req, res) => {
-try {
-    const user = await User.findById(req.session.userId);
-    user.firstName = req.body.firstName;
-    user.lastName = req.body.lastName;
-    user.email = req.body.email;
-if (req.body.password) {
-    user.password = await bcrypt.hash(req.body.password, 10);
-    }
-    await user.save();
+  try {
+      const user = await User.findById(req.session.userId);
+      user.firstName = req.body.firstName;
+      user.lastName = req.body.lastName;
+      user.email = req.body.email;
 
-    req.flash('success', 'Your details have been updated successfully.');
-    res.redirect('/account');
-} catch (e) {
-    console.log(e);
-    req.flash('error', 'Something went wrong. Please try again.');
-    res.redirect('/account');
-    }
-  });
+      if (req.body.password) {
+          user.password = await bcrypt.hash(req.body.password, 10);
+      }
+
+      await user.save();
+
+      req.flash('success', 'Your details have been updated successfully.');
+      res.redirect('/account');
+  } catch (e) {
+      console.log(e);
+      req.flash('error', 'Something went wrong. Please try again.');
+      res.redirect('/account');
+  }
+});
+
 
 //ADMIN ACCESS
 
@@ -363,6 +369,7 @@ app.post('/charge', function(req, res) {
         total: req.body.total,
         subtotal: req.body.subtotal,
         shippingCost: req.body.shippingCost,
+        userId: req.session.userId,
         products: []
       });
 
@@ -376,7 +383,7 @@ app.post('/charge', function(req, res) {
           });
         });
       }
-
+      
       // Validate the order
       newOrder.validate(function(error) {
         if (error) {
@@ -384,18 +391,27 @@ app.post('/charge', function(req, res) {
             req.flash('error_messages', errors); // save error messages in flash
             res.redirect('/checkout'); // redirect back to the checkout page
         } else {
-            // Save the order
-            newOrder.save((err, savedOrder) => {
-                if (err) {
-                  console.error('Order creation failed:', err);
-                  res.status(500).send('Error saving order');
-                } else {
-                  req.session.order = savedOrder; // Save order to session
-                  res.redirect('/confirmation');
-                }
+            // Update user's orders
+            User.findByIdAndUpdate(req.session.userId, { $push: { orders: newOrder._id } }, function(err, user) {
+              if (err) {
+                console.error('Error updating user orders:', err);
+                res.status(500).send('Error updating user orders');
+              } else {
+                // Save the order
+                newOrder.save((err, savedOrder) => {
+                  if (err) {
+                    console.error('Order creation failed:', err);
+                    res.status(500).send('Error saving order');
+                  } else {
+                    req.session.order = savedOrder; // Save order to session
+                    res.redirect('/confirmation');
+                  }
+                });
+              }
             });
         }
-    });
+      });
+      
 
     }
   });

@@ -27,7 +27,8 @@ const newuserSchema={
         type: String,
         required: [true, 'Password is required'],
         minlength: [6, 'Password must be at least 6 characters long']
-    }
+    },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 };
 
 const User = mongoose.model('User', newuserSchema);

@@ -4793,6 +4793,34 @@ label {
 /* End Cart Area css
 ============================================================================================ */
 
+/* Order / Donedeal Table Area css
+============================================================================================ */
+
+.orders {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.order-table {
+  width: 90%;
+  border-collapse: collapse;
+  margin: 30px auto; 
+  border-collapse: collapse; 
+  color: black;
+
+}
+
+.order-th, .order-td {
+  padding: 10px;
+  border: 1px solid #dddddd;
+}
+
+.order-tr {
+  background-color: #f2f2f2;
+}
+
+
+
 
 /* Register form Area css
 ============================================================================================ */
