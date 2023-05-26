@@ -1,9 +1,11 @@
+//Checks if site is not in production, loads .env file
+
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config()
 }
 
 
-// Importing Libraies that we installed using npm
+// Importing Libraies installed using npm
 const express = require("express")
 const bcrypt = require("bcrypt") 
 const passport = require("passport")
@@ -25,10 +27,9 @@ var bodyParser = require('body-parser');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer({ dest: 'public/img/product' }); 
-
-
-
-//app.use(bodyParser.urlencoded({ extended: true }));
+const shortid = require('shortid');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 
 // MONGODB CONNECTION
@@ -130,15 +131,15 @@ app.get('/stock-price', function(req, res){
 //ACCOUNT
 
 app.get('/account', (req, res) => {
-  if (req.session && req.session.userId) {
+  if (req.session && req.session.userId) { // Check if user is logged in with database ID 
       User.findById(req.session.userId)
           .populate('orders')
           .exec((err, user) => {
               if (err) {
                   console.log(err);
-                  res.redirect('/login'); // Optionally redirect to login if there's an error
+                  res.redirect('/login'); //If error, redirect to login page
               } else {
-                  res.render('pages/account', { user: user, orders: user.orders });
+                  res.render('pages/account', { user: user, orders: user.orders }); // login and pass user and orders as variables
               }
           });
   } else {
@@ -148,12 +149,12 @@ app.get('/account', (req, res) => {
 
 app.post('/account', async (req, res) => {
   try {
-      const user = await User.findById(req.session.userId);
+      const user = await User.findById(req.session.userId); //find user ID & update user details
       user.firstName = req.body.firstName;
       user.lastName = req.body.lastName;
       user.email = req.body.email;
 
-      if (req.body.password) {
+      if (req.body.password) { //hash new password
           user.password = await bcrypt.hash(req.body.password, 10);
       }
 
@@ -180,17 +181,15 @@ app.get('/admin-login', (req, res) => {
     app.post('/admin-login', async (req, res) => {
         const { username, password } = req.body;
         try {
-          const admin = await Admin.findOne({ username: username });
+          const admin = await Admin.findOne({ username: username }); //checks for admin logged in
           if (!admin) {
-            // username not found in database
             return res.render('pages/admin-login', { errors: ['Incorrect username or password'] });
           }
           const isMatch = await bcrypt.compare(password, admin.password);
           if (!isMatch) {
-            // password doesn't match
             return res.render('pages/admin-login', { errors: ['Incorrect username or password'] });
           }
-          req.session.adminId = admin._id;
+          req.session.adminId = admin._id; // if correct creds, login 
           res.redirect('/admin');
         } catch (e) {
           console.log(e);
@@ -201,7 +200,7 @@ app.get('/admin-login', (req, res) => {
 // ADMIN - ADD A PRODUCT
 app.get('/admin',  (req, res) => {
     if (req.session && req.session.adminId) {
-        Admin.findById(req.session.adminId, (err, user) => {
+        Admin.findById(req.session.adminId, (err, user) => { //check admin creds 
           if (err) {
             console.log(err);
           } else {
@@ -213,14 +212,14 @@ app.get('/admin',  (req, res) => {
       }
     });
 
-    app.post("/admin", upload.single('image'), function(req, res){
-      let newCar = new Car({
+    app.post("/admin", upload.single('image'), function(req, res){ 
+      let newCar = new Car({ //create a new car product in DB 
           productName: req.body.productName,
           category: req.body.category,
           colour: req.body.colour,
           Quantity: req.body.Quantity,
           Price: req.body.Price,
-          image: req.file ? req.file.filename : ''
+          image: req.file ? req.file.filename : '' //use upload.single image middleware for adding photo
       });
       
       newCar.save();
@@ -232,36 +231,37 @@ app.get('/admin',  (req, res) => {
 
 
 app.use((req, res, next) => {
-  const cart = req.session.cart;
-  let cartItemCount = 0;
+  const cart = req.session.cart; //retrieve cart from session 
+  let cartItemCount = 0; //variable to keep track of total
   if (cart) {
-    for (const productId of Object.keys(cart)) {
+    for (const productId of Object.keys(cart)) { //iterate number of items in cart
       cartItemCount += cart[productId];
     }
   }
-  res.locals.cartItemCount = req.session.cart ? Object.keys(req.session.cart).length : 0;
+  res.locals.cartItemCount = req.session.cart ? Object.keys(req.session.cart).length : 0; //assign total value and make it accessible to all views
   next();
 });
 
-// ADD TO CART
+// ADD TO CART / REMOVE FROM CART 
+
 app.post('/add-to-cart', (req, res) => {
   const productId = req.body.productId;
-  if (!req.session.cart) {
+  if (!req.session.cart) { //check if user has a cart
     req.session.cart = {};
   }
-  if (!req.session.cart[productId]) {
-    req.session.cart[productId] = 1;
+  if (!req.session.cart[productId]) { //check if product is already in cart
+    req.session.cart[productId] = 1; //if not make cart 1
   } else {
-    req.session.cart[productId]++;
+    req.session.cart[productId]++; //if there is already an item in the cart, add the new one
   }
   res.redirect('/');
 });
 
 app.post('/remove-from-cart', (req, res) => {
   const productId = req.body.productId;
-  if (req.session.cart && req.session.cart[productId]) {
+  if (req.session.cart && req.session.cart[productId]) { //check if cart exists
     req.session.cart[productId]--;
-    if (req.session.cart[productId] === 0) {
+    if (req.session.cart[productId] === 0) { //empty cart
       delete req.session.cart[productId];
     }
   }
@@ -272,45 +272,39 @@ app.post('/remove-from-cart', (req, res) => {
 /// CART
 
 app.get('/cart', async (req, res) => {
-  const cartItems = [];
+  const cartItems = []; //create empty cart
   const productIds = req.session.cart ? Object.keys(req.session.cart) : [];
-  for (const productId of productIds) {
-    const product = await Car.findById(productId);
-    const quantity = req.session.cart[productId];
+  for (const productId of productIds) { //retieve items from cart
+    const product = await Car.findById(productId); //fetch details from DB
+    const quantity = req.session.cart[productId]; //fetch quantity
     cartItems.push({ product, quantity });
   }
   res.render('pages/cart', { cartItems });
 });
 
 router.post('/add-to-cart/:id', function(req, res, next) {
-  var productId = req.params.id;
+  var productId = req.params.id; //retrieve product IDs from URL
   var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-  Product.findById(productId, function(err, product) {
+  Product.findById(productId, function(err, product) { //fetch details from DB
     if (err) {
       return res.redirect('/');
     }
-    cart.add(product, product.id);
+    cart.add(product, product.id); // Add products 
     req.session.cart = cart; // Store the cart in session variable
     res.redirect('/');
   });
 });
 
-
-
 // CATEGORY
 
 app.get('/category', (req, res) => {
-    Car.find({},function(err, cars){
+    Car.find({},function(err, cars){ //retieve all products from the DB
         res.render('pages/category', {
-            carsList: cars
+            carsList: cars //object to hold car array 
         })
     })
    });
-
-
-
-
    
 // Route to handle filtering requests
 router.get('/cars', async (req, res) => {
@@ -326,10 +320,9 @@ module.exports = router;
 
 app.get('/checkout', (req, res) => {
 
-
   // Calculate total
-  let cartItems = req.session.cart || [];
-  const shippingCost = req.query.shipping;
+  let cartItems = req.session.cart || []; //retieve cart items
+  const shippingCost = req.query.shipping; //Extract shipping, subtotal and total
   const subtotal = req.query.subtotal;
   const total = parseFloat(shippingCost) + parseFloat(subtotal);
 
@@ -337,12 +330,9 @@ app.get('/checkout', (req, res) => {
   res.render('pages/checkout', { cartItems, subtotal, shippingCost, total });
 });
 
-
-const shortid = require('shortid');
-
 app.post('/charge', function(req, res) {
   var total = req.body.total; // retrieve total value from form data
-  stripe.charges.create({
+  stripe.charges.create({ //Use Stripe API to create charge
     amount: total,
     currency: 'eur',
     source: req.body.stripeToken,
@@ -364,7 +354,7 @@ app.post('/charge', function(req, res) {
         zip: req.body.zip,
         createAccount: req.body.selector === "on",
         message: req.body.message,
-        orderNumber: shortid.generate(),
+        orderNumber: shortid.generate(), //randomly generate order and tracking number
         trackingNumber: shortid.generate(),
         total: req.body.total,
         subtotal: req.body.subtotal,
@@ -374,12 +364,12 @@ app.post('/charge', function(req, res) {
       });
 
       if (req.body.cartItem) {
-        req.body.cartItem.forEach(function(item) {
+        req.body.cartItem.forEach(function(item) { //Add details of products to order 
           let parts = item.split('|');
           newOrder.products.push({
             name: parts[0],
             price: parts[1],
-            quantity: parts[2] // Adjust this according to your logic.
+            quantity: parts[2] 
           });
         });
       }
@@ -389,10 +379,10 @@ app.post('/charge', function(req, res) {
         if (error) {
             const errors = Object.values(error.errors).map((err) => err.message);
             req.flash('error_messages', errors); // save error messages in flash
-            res.redirect('/checkout'); // redirect back to the checkout page
+            res.redirect('/checkout'); 
         } else {
             // Update user's orders
-            User.findByIdAndUpdate(req.session.userId, { $push: { orders: newOrder._id } }, function(err, user) {
+            User.findByIdAndUpdate(req.session.userId, { $push: { orders: newOrder._id } }, function(err, user) { //push new order ID into order array
               if (err) {
                 console.error('Error updating user orders:', err);
                 res.status(500).send('Error updating user orders');
@@ -417,30 +407,20 @@ app.post('/charge', function(req, res) {
   });
 });
 
-app.post('/validate-order', (req, res) => {
-  // create new order instance with provided form data
+app.post('/validate-order', (req, res) => { // create new order instance with provided form data
+  
   let newOrder = new Order(req.body);
 
-  // validate the new order instance
-  newOrder.validate(function(error) {
+  
+  newOrder.validate(function(error) { // validate the new order instance
       if (error) {
-          // extract error messages
-          const errors = Object.values(error.errors).map((err) => err.message);
-          // return error messages
+          const errors = Object.values(error.errors).map((err) => err.message);  // extract error messages
           res.status(400).json({ errors });
       } else {
-          // return successful validation
           res.status(200).json({ success: true });
       }
   });
 });
-
-
-
-
-  
-
-
 
 // COMING SOON
 
@@ -455,7 +435,7 @@ app.get('/confirmation', function(req, res) {
     res.render('pages/confirmation', { order: req.session.order });
     delete req.session.order; // Clear the order from the session
   } else {
-    res.redirect('/checkout'); // No order to confirm, redirect to checkout
+    res.redirect('/checkout'); 
   }
 });
 
@@ -467,8 +447,8 @@ app.get('/contact', function(req, res)  {
     res.render('pages/contact');
     });
 
-// Define route to handle form submission
-app.post('/submit-form', (req, res) => {
+
+app.post('/submit-form', (req, res) => { // Define route to handle form submission
   // Get form data
   const name = req.body.name;
   const email = req.body.email;
@@ -520,25 +500,23 @@ app.get('/', (req,res) =>{
 
 app.get('/login', (req, res) => {
 
-    if (res.locals.user) res.redirect('/');
+    if (res.locals.user) res.redirect('/'); //checks for log in details
     res.render('pages/login');
     });
 
     app.post('/login', async (req, res) => {
         const { email, password } = req.body;
         try {
-          const user = await User.findOne({ email: email });
+          const user = await User.findOne({ email: email }); //Check DB for email
           if (!user) {
-            // email not found in database
             return res.render('pages/login', { errors: ['Incorrect email or password'] });
           }
-          const isMatch = await bcrypt.compare(password, user.password);
+          const isMatch = await bcrypt.compare(password, user.password); //Check DB for password
           if (!isMatch) {
-            // password doesn't match
             return res.render('pages/login', { errors: ['Incorrect email or password'] });
           }
           req.session.userId = user._id;
-          req.session.firstName = user.firstName;
+          req.session.firstName = user.firstName; //pass first name so it can be displayed in the nav bar 
           res.redirect('/account');
         } catch (e) {
           console.log(e);
@@ -551,29 +529,28 @@ app.get('/login', (req, res) => {
 
 // Donedeal
 
-const axios = require('axios');
-const cheerio = require('cheerio');
 
-app.get('/preowned', async (req, res) => {
+
+app.get('/preowned', async (req, res) => { //Send Get Req to Donedeal
   const url = 'https://www.donedeal.ie/cars/Mercedes-Benz';
 
   const { data } = await axios.get(url);
-  const $ = cheerio.load(data);
+  const $ = cheerio.load(data); //Use cheerio for parsing and querying 
 
-  const cars = [];
-  $('li.Listings__Desktop-sc-1igquny-3').each((i, elem) => {
+  const cars = []; //create empty array
+  $('li.Listings__Desktop-sc-1igquny-3').each((i, elem) => { //top level class to pull HTML 
 
     const title = $(elem).find('.Card__Body-sc-1v41pi0-8 .Card__Title-sc-1v41pi0-4').text().trim();
-    const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13').text().trim().replace(/(€)/g, function (match, p1, offset) {
+    const price = $(elem).find('.Card__InfoText-sc-1v41pi0-13').text().trim().replace(/(€)/g, function (match, p1, offset) { //take price and break up full price and ppm
       return offset > 0 ? " / " + p1 : p1;
     });
-    const details = $(elem).find('.Card__KeyInfoList-sc-1v41pi0-6 li');
+    const details = $(elem).find('.Card__KeyInfoList-sc-1v41pi0-6 li'); //Split the details as there was no specific class for each
     const year = $(details).eq(0).text().trim();
     const fuelType = $(details).eq(1).text().trim();
     const mileage = $(details).eq(2).text().trim();
     const timePosted = $(details).eq(3).text().trim();
     const location = $(details).eq(4).text().trim();
-    const link = $(elem).find('a.Link__SLinkButton-sc-9jmsfg-0').attr('href');
+    const link = $(elem).find('a.Link__SLinkButton-sc-9jmsfg-0').attr('href'); //get link to page
 
 
     cars.push({ title, price, year, fuelType, mileage, timePosted, location, link });
@@ -624,15 +601,15 @@ app.get('/registration', (req, res) => {
 app.post("/registration", async (req, res) => {
 
     try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        let users = new User({
+        const hashedPassword = await bcrypt.hash(req.body.password, 10) // hash pw using bcrypt
+        let users = new User({ //create new user 
             email: req.body.email,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             password: hashedPassword  
         });
     
-    users.validate(function(error) {
+    users.validate(function(error) { // validate entries (rules in schema)
         if (error) {
             const errors = Object.values(error.errors).map((err) => err.message);
             res.render('pages/registration', { errors });
@@ -656,16 +633,16 @@ app.post("/registration", async (req, res) => {
 // SEARCH
 
 app.get('/search', (req, res) => {
-    const query = req.query.q;
+    const query = req.query.q; // Extract search query
   
     if (!query) {
       res.render('pages/search', { results: [] });
       return;
     }
   
-    const regex = new RegExp(escapeRegex(query), 'gi');
+    const regex = new RegExp(escapeRegex(query), 'gi'); //get rid of special character 
   
-    Car.find({ productName: regex }, (err, searchResults) => {
+    Car.find({ productName: regex }, (err, searchResults) => { // search product names
       if (err) {
         console.log(err);
         res.redirect('/');
