@@ -121,9 +121,6 @@
     <section class="cart_area">
         <div class="container">
             <h1>Shopping Cart</h1>
-
-           
-
             <div class="cart_inner">
                 <div class="table-responsive">
                     <table class="table">
@@ -136,15 +133,14 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <%
                             let subtotal = 0;
                             for (const cartItem of cartItems) {
-                              const total = cartItem.product.Price * cartItem.quantity;
-                              subtotal += total;
-                          %>
-                                <tr>
-                                  <td>
+                            const total = cartItem.product.Price * cartItem.quantity;
+                            subtotal += total;
+                            %>
+                            <tr>
+                                <td>
                                     <div class="media">
                                       <div class="d-flex">
                                         <img src="../../public/img/product/<%= cartItem.product.image %>" alt="">
@@ -160,9 +156,8 @@
                                   <td>
                                     <div class="product_count">
                                         <button class="btn btn-sm btn-danger" onclick="removeFromCart('<%= cartItem.product._id %>')">Remove</button>
-                                        <span><%= cartItem.quantity %></span>
-                                        
-                                      </div>
+                                        <span><%= cartItem.quantity %></span>  
+                                    </div>
                                   </td>
                                   <td>
                                     <h5>€<%= cartItem.product.Price * cartItem.quantity %></h5>
@@ -171,7 +166,8 @@
                               <% } %>
                               
 
-                              <style>
+                              <!--
+                                <style>
                                 .product_count {
                                   display: flex;
                                   align-items: center;
@@ -180,7 +176,7 @@
                                 .product_count span {
                                   margin-right: 10px;
                                 }
-                              </style>
+                              </style>-->
                             
                             <tr class="bottom_button">
                                 <td>
@@ -197,9 +193,7 @@
                                         <form action="/cart" method="post">
                                             <input type="text" name="coupon" placeholder="Coupon code">
                                             <button class="primary-btn" type="submit">Apply</button>
-                                          </form>
-                                       
-                                        
+                                        </form> 
                                     </div>
                                 </td>
                             </tr>
@@ -229,20 +223,15 @@
                                     
                                 </td>
                                 <td>
-                                    <div class="shipping_box">
-                                        
-                                        
-                                        <form method="get" action="/checkout">
-                                            
+                                    <div class="shipping_box">   
+                                        <form method="get" action="/checkout">   
                                         <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>
                                         <select class="shipping_select">
                                             <option value="1">Ireland</option>
                                             <option value="2">United Kingdom</option>
                                             <option value="4">Rest of Europe</option>
                                         </select>
-                                        
-                                        
-                                        
+
                                         <select class="shipping_select">
                                             <option value="" disabled selected>Select closest Showroom</option>
                                             <option value="1">Long Mile Road</option>

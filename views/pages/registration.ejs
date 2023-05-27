@@ -124,49 +124,47 @@
                         <div class="register_box_img">
                             <img class="img-fluid" src="../../public/img/register_img.png" alt="">
                         </div>
-                    </div>
-                    
-<div class="col-lg-6">
-    <div class="login_form_inner">
-        <h3>Register below</h3>
+                    </div> 
+                    <div class="col-lg-6">
+                        <div class="login_form_inner">
+                            <h3>Register below</h3>
 
-        <form class="row login_form" action="/registration" method="post" id="contactForm" novalidate="novalidate">
-            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <% for (let i = 0; i < errors.length; i++) { %>
-                  <div class="d-flex align-items-center">
-                    <p class="mb-0 mr-auto"><%= errors[i] %></p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true" style="font-size: 20px; line-height: 20px;">&times;</span>
-                    </button>
-                  </div>
-                <% } %>
-              </div>
-            <% } %>
-          
-            <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'">
-            </div>
-            <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'">
-            </div>
-            <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="email" name="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
-            </div>
-            <div class="col-md-12 form-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
-            </div>
+                        <form class="row login_form" action="/registration" method="post" id="contactForm" novalidate="novalidate">
+                            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <% for (let i = 0; i < errors.length; i++) { %>
+                            <div class="d-flex align-items-center">
+                            <p class="mb-0 mr-auto"><%= errors[i] %></p>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true" style="font-size: 20px; line-height: 20px;">&times;</span>
+                            </button>
+                            </div>
+                            <% } %>
+                            </div>
+                            <% } %>
             
-            <div class="col-md-12 form-group">
-                <button type="submit" value="submit" class="primary-btn">Register</button>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                            </div>
                 
+                            <div class="col-md-12 form-group">
+                                <button type="submit" value="submit" class="primary-btn">Register</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
-    </div>
-</div>
-</div>
-</div>
-</section>
+        </section>
 
 
 </body>

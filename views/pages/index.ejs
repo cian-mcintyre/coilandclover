@@ -259,9 +259,6 @@
 						<div class="overlay"></div>
 						<img class="img-fluid w-100" src="../../public/img/category/c5.jpg" alt="">
 						<a href="../../public/img/category/c5.jpg" class="img-pop-up" target="_blank">
-							<!-- <div class="deal-details">
-								<h6 class="deal-title">Black Friday sale now on</h6>
-							</div> -->
 						</a>
 					</div>
 				</div>
@@ -284,24 +281,19 @@
 				</div>
 				<div class="row">
 					<!-- single product -->
-					
-						
-
                     <%carsList.forEach(car => { %>
 					<div class="col-lg-3 col-md-6">
 						<div class="single-product">
 							<a href="<%= car.Page %>"><img class="img-fluid" src="../../public/img/product/<%= car.image %>"  alt=""></a>
 							<div class="product-details">
-								<a href="<%= car.Page %>"><h6>
+								<a href="<%= car.Page %>">
+									<h6>
                                         <%= car.productName %>
-										
-									</h6></a>
+									</h6>
+								</a>
 								<div class="price">
-									<h6>$ <%= car.Price %>
-										
-                                        
-                                        
-                                        </h6>
+									<h6>$ <%= car.Price %>     
+                                    </h6>
 									<h6 class="l-through">€200,000</h6>
 								</div>
 								<div class="prd-bottom">
@@ -311,11 +303,7 @@
 										  <button type="submit" class="primary-btn">Add to Bag</button>
 										</form>
 										<br>
-									  </div>
-									  
-								
- 
-					
+									</div>
 									<a href="#" class="social-info">
 										<span class="lnr lnr-heart"></span>
 										<p class="hover-text">Wishlist</p>
@@ -328,7 +316,6 @@
 										<span class="lnr lnr-move"></span>
 										<p class="hover-text">view more</p>
 									</a>
-									
 								</div>
 							</div>
 						</div>
@@ -336,18 +323,11 @@
 
 					
 					<%})%>
-
 	
-	
-	  
-                   
-					
 				</div>
-			</div>
-			
+			</div>	
 		</div>
 
-				
 		<!-- single product slide -->
 		<div class="single-product-slider">
 			<div class="container">
@@ -371,7 +351,6 @@
 									<h6 class="l-through">$210.00</h6>
 								</div>
 								<div class="prd-bottom">
-
 									<a class="primary-btn" href="/coming-soon">Find out more</a>
 								</div>
 							</div>
@@ -388,7 +367,6 @@
 									<h6 class="l-through">$210.00</h6>
 								</div>
 								<div class="prd-bottom">
-
 									<a class="primary-btn" href="/coming-soon">Find out more</a>
 								</div>
 							</div>
@@ -405,7 +383,6 @@
 									<h6 class="l-through">$210.00</h6>
 								</div>
 								<div class="prd-bottom">
-
 									<a class="primary-btn" href="/coming-soon">Find out more</a>
 								</div>
 							</div>
@@ -422,13 +399,11 @@
 									<h6 class="l-through">$210.00</h6>
 								</div>
 								<div class="prd-bottom">
-
 									<a class="primary-btn" href="/coming-soon">Find out more</a>
 								</div>
 							</div>
 						</div>
 					</div>
-					
 				</div>
 			</div>
 		</div>

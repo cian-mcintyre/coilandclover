@@ -124,22 +124,19 @@
         <form action="/search" method="GET">
             <input type="text" name="q" placeholder="Search for cars">
             <button class="primary-btn" type="submit">Search</button>
-          </form>
-          
-          
+        </form>     
     </div>
-    </div>
-    <section class="lattest-product-area pb-40 category-list">
+</div>
+<section class="lattest-product-area pb-40 category-list">
     <% if (results.length === 0) { %>
         <p>No results found</p>
-      <% } else { %>
+    <% } else { %>
         <ul>
-          <% for (let i = 0; i < results.length; i++) { %>
+            <% for (let i = 0; i < results.length; i++) { %>
             <div class="col-lg-4 col-md-6">
                 <div class="single-product">
-                    <a href="<%= results[i].Page %>">
-                        
-                    <img class="img-fluid" src="../../public/img/product/<%= results[i].image %>" alt=""></a>
+                    <a href="<%= results[i].Page %>">   
+                        <img class="img-fluid" src="../../public/img/product/<%= results[i].image %>" alt=""></a>
                     <div class="product-details">
                         <h6> <li><%= results[i].productName %></li></h6>
                         <div class="price">
@@ -147,11 +144,10 @@
                             <h6 class="l-through">€110,000</h6>
                         </div>
             
-          <% } %>
+            <% } %>
         </ul>
-      <% } %>
-    </section>
-
+    <% } %>
+</section>
 
 </body>
 

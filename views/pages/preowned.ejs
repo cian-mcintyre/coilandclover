@@ -137,35 +137,35 @@
 <body style="text-align: center;">
     <h1 style="padding-top: 100px;">Car Listings</h1>
 	<div style="width: 80%; margin: 30px auto; padding-bottom: 10px;">
-    <table id="myTable" style="width: 100%; margin: 30px auto; border-collapse: collapse; color: black;">
-		<thead>
-			<tr style="background-color: #f2f2f2;">
-				<th style="padding: 10px; border: 1px solid #dddddd;">Title</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Price</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Year</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Fuel Type</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Mileage</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Time Posted</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Location</th>
-				<th style="padding: 10px; border: 1px solid #dddddd;">Link</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% cars.forEach(function(car){ %>
-			<tr style="color:white">
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.title %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.price %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.year %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.fuelType %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.mileage %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.timePosted %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.location %></td>
-				<td style="padding: 10px; border: 1px solid #dddddd;"><a href="<%= car.link %>" target="_blank" rel="noopener noreferrer">DoneDeal</a></td>
-			</tr>
-			<% }); %>
-		</tbody>
-	</table>
-</div>
+		<table id="myTable" style="width: 100%; margin: 30px auto; border-collapse: collapse; color: black;">
+			<thead>
+				<tr style="background-color: #f2f2f2;">
+					<th style="padding: 10px; border: 1px solid #dddddd;">Title</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Price</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Year</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Fuel Type</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Mileage</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Time Posted</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Location</th>
+					<th style="padding: 10px; border: 1px solid #dddddd;">Link</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% cars.forEach(function(car){ %>
+				<tr style="color:white">
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.title %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.price %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.year %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.fuelType %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.mileage %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.timePosted %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><%= car.location %></td>
+					<td style="padding: 10px; border: 1px solid #dddddd;"><a href="<%= car.link %>" target="_blank" rel="noopener noreferrer">DoneDeal</a></td>
+				</tr>
+				<% }); %>
+			</tbody>
+		</table>
+	</div>
 	
 	<script>
 		$(document).ready(function() {
@@ -174,15 +174,9 @@
 				"lengthChange": false
 			});
 		});
-	</script>
-	
-		
+	</script>	
+
 </body>
-
-  
-
-
-
 
 	<!-- End pre-owned Area -->
 

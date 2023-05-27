@@ -1395,6 +1395,15 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: underline;
   }
 
+  .product_count {
+    display: flex;
+    align-items: center;
+  }
+
+  .product_count span {
+    margin-right: 10px;
+  }
+
 /* start features area css
 ============================================================================================ */
 @media (max-width: 768px) {

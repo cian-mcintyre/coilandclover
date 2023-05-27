@@ -121,16 +121,9 @@
 	</section>
 	<!-- End Banner Area -->
 
-
-	
-
-
 	<div class="container">
 		<div class="row">
 			<div class="col-xl-3 col-lg-4 col-md-5">
-				
-
-
 				<div class="sidebar-filter mt-50">
 					<div class="top-filter-head">Product Filters</div>
 					<div class="head">Category</div>
@@ -208,7 +201,7 @@
 					</div>
 				</div>
 				<!-- End Filter Bar -->
-				<!-- Start Best Seller -->
+				
 				<section id="carsListSection" class="lattest-product-area pb-40 category-list">
 					<div class="row">
 						<div id="no-results" class="col-lg-4 col-md-6" style="display: none;">No results</div>
@@ -233,8 +226,7 @@
 										  </form>
 										  <br>
 										</div>
-										  
-						
+
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
 											<p class="hover-text">Wishlist</p>
@@ -253,11 +245,9 @@
 							</div>
 						</div>
 						<%})%>
-						
-
 					</div>
 				</section>
-				<!-- End Best Seller -->
+
 				<!-- Start Filter Bar -->
 				<div style="margin-bottom:50px" class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="sorting mr-auto">
@@ -278,42 +268,6 @@
 			</div>
 		</div>
 	</div>
-
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-  const filterBtn = document.getElementById('filterBtn');
-  const noResultsMessage = document.getElementById('no-results');
-
-  filterBtn.addEventListener('click', () => {
-    // Get the selected colour	
-    const selectedColour = document.querySelector('input[name="colour"]:checked').value;
-
-    // Get the selected category
-    const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-
-    // Filter the cars by colour and category
-    const filteredCars = document.querySelectorAll(`[data-colour="${selectedColour}"][data-category="${selectedCategory}"]`);
-
-    // Hide all cars
-    const allCars = document.querySelectorAll('[data-colour]');
-    allCars.forEach(car => {
-      car.style.display = 'none';
-    });
-
-    // If there are filtered cars, show them. Otherwise, show the no results message.
-    if (filteredCars.length > 0) {
-      filteredCars.forEach(car => {
-        car.style.display = 'block';
-      });
-      noResultsMessage.style.display = 'none'; // Hide the no results message
-    } else {
-      noResultsMessage.style.display = 'block'; // Show the no results message
-    }
-  });
-});
-
-	
-		</script>
 
 	<!-- start footer Area -->
 <footer class="footer-area section_gap">
@@ -399,6 +353,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
 <script src="../../public/js/owl.carousel.min.js"></script>
 <script src="../../public/js/main.js"></script>
 <script src="../../public/js/stock.js"></script>
+<script src="../../public/js/filter.js"></script>
 </body>
 
 </html>

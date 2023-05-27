@@ -196,34 +196,32 @@
                                     
                                 </div>
                                 <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
-  <% if (Array.isArray(cartItems)) { %>
-    <% cartItems.forEach(function(item) { %>
-      <input type="hidden" name="cartItem[]" value="<%= item.name %>|<%= item.price %>">
-    <% }); %>
-  <% } %>
-  <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
-  <br>
-  <div class="creat_account">
-    <input type="checkbox" id="f-option4" name="selector">
-    <label for="f-option4">I’ve read and accept the </label>
-    <a href="mercedes-benz-General-Terms-and-Conditions-2022-10.pdf" download>terms & conditions*</a>
-</div>
-<br>
-<script
-    id="stripe-script"
-    src="https://checkout.stripe.com/checkout.js"
-    class="stripe-button"
-    data-key="pk_test_51N58QNFyhuvB1jEucfKtp23zYmVrLD5tsFDyrziGELCf8PU5VIfAx9WxYIjBFAy53wTPpS2GR5rVmRk4uPxZZhZr00oOHS1mWl"
-    data-amount="<%= total * 100 %>"
-    data-name="MercedesOfTheFuture"
-    data-description="Sale"
-    data-locale="auto"
-    data-label="PROCEED TO PAYMENT">
-</script>
-
-</form>
+                                    <% if (Array.isArray(cartItems)) { %>
+                                        <% cartItems.forEach(function(item) { %>
+                                        <input type="hidden" name="cartItem[]" value="<%= item.name %>|<%= item.price %>">
+                                        <% }); %>
+                                    <% } %>
+                                    <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
+                                    <br>
+                                    <div class="creat_account">
+                                        <input type="checkbox" id="f-option4" name="selector">
+                                        <label for="f-option4">I’ve read and accept the </label>
+                                        <a href="mercedes-benz-General-Terms-and-Conditions-2022-10.pdf" download>terms & conditions*</a>
+                                    </div>
+                                    <br>
+                                    <script
+                                        id="stripe-script"
+                                        src="https://checkout.stripe.com/checkout.js"
+                                        class="stripe-button"
+                                        data-key="pk_test_51N58QNFyhuvB1jEucfKtp23zYmVrLD5tsFDyrziGELCf8PU5VIfAx9WxYIjBFAy53wTPpS2GR5rVmRk4uPxZZhZr00oOHS1mWl"
+                                        data-amount="<%= total * 100 %>"
+                                        data-name="MercedesOfTheFuture"
+                                        data-description="Sale"
+                                        data-locale="auto"
+                                        data-label="PROCEED TO PAYMENT">
+                                    </script>
+                        </form>
                     </div>
-                      
                 </div>
             </div>
         </div>

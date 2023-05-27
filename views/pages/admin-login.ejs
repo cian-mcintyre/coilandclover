@@ -83,7 +83,8 @@
                                 <li class="nav-item active greeting"><a href="/account" class="creat_account"><span class="lnr lnr-user"></span></a>
                                     <% if (user) { %>
                                         Hi <%= user.firstName %>
-                                      <% } %></li>
+                                      <% } %>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -120,41 +121,37 @@
 <section class="login_box_area section_gap">
     <div class="container">
         <div class="row">
-		<div class="col-lg-6">
-			<div class="login_form_inner">
-				<h3>Log in to enter</h3>
-				<div class="row">
-                    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-                        <div class="alert alert-danger">
-                          <% for (let i = 0; i < errors.length; i++) { %>
-                            <p><%= errors[i] %></p>
-                          <% } %>
+            <div class="col-lg-6">
+                <div class="login_form_inner">
+                    <h3>Log in to enter</h3>
+                    <div class="row">
+                        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                            <div class="alert alert-danger">
+                            <% for (let i = 0; i < errors.length; i++) { %>
+                                <p><%= errors[i] %></p>
+                            <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                    <form class="row login_form" action="/admin-login" method="post" id="contactForm" novalidate="novalidate">
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
                         </div>
-                      <% } %>
+                        <div class="col-md-12 form-group">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button type="submit" value="submit" class="primary-btn">Log In</button>
+                        </div>
+                    </form>
                 </div>
-				<form class="row login_form" action="/admin-login" method="post" id="contactForm" novalidate="novalidate">
-					<div class="col-md-12 form-group">
-						<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
-					</div>
-					<div class="col-md-12 form-group">
-						<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
-					</div>
-					<div class="col-md-12 form-group">
-						<button type="submit" value="submit" class="primary-btn">Log In</button>
-					
-					</div>
-				</form>
-			</div>
-		</div>
-
-                    <div class="col-lg-6">
-                        <div class="register_box_img">
-                            <img class="img-fluid" src="../../public/img/login3.jpeg" alt="">
-                            
-                           
-                        </div>
+		    </div>
+                <div class="col-lg-6">
+                    <div class="register_box_img">
+                        <img class="img-fluid" src="../../public/img/login3.jpeg" alt="">      
                     </div>
                 </div>
+        </div>
     </div>
 </section>
 </body>
