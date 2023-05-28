@@ -23,7 +23,7 @@ const Car = require('./models/cars');
 const Order = require('./models/orders');
 const nodemailer = require('nodemailer');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer({ dest: 'public/img/product' }); 
@@ -112,7 +112,7 @@ app.use((req, res, next) => {
 //Stock price available in all routes
 
 app.get('/stock-price', function(req, res){
-  const axios = require('axios');
+
 
   axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DAI.DE&apikey=' + process.env.MERCEDES_STOCK_API_KEY)
   .then(response => {
@@ -284,17 +284,35 @@ app.get('/cart', async (req, res) => {
 
 router.post('/add-to-cart/:id', function(req, res, next) {
   var productId = req.params.id; //retrieve product IDs from URL
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-  Product.findById(productId, function(err, product) { //fetch details from DB
+  Car.findById(productId, function(err, product) { //fetch details from DB
     if (err) {
       return res.redirect('/');
     }
-    cart.add(product, product.id); // Add products 
-    req.session.cart = cart; // Store the cart in session variable
+
+    if (!req.session.cart) { // Initialize cart in session if it doesn't exist
+      req.session.cart = [];
+    }
+
+    // Check if product already exists in cart
+    const existingProductIndex = req.session.cart.findIndex(p => p.id === product.id);
+
+    if (existingProductIndex > -1) {
+      // Increment quantity of the existing product
+      req.session.cart[existingProductIndex].quantity++;
+    } else {
+      // Add product to the cart with quantity 1
+      req.session.cart.push({
+        id: product.id,
+        name: product.productName,
+        quantity: 1
+      });
+    }
+    
     res.redirect('/');
   });
 });
+
 
 // CATEGORY
 
@@ -317,18 +335,33 @@ module.exports = router;
 
 // CHECKOUT
 
+app.post('/checkout', (req, res) => {
+  
+  let itemNames = req.body['cartItems[][name]']; // Extract cart item related fields from the body
+  let itemPrices = req.body['cartItems[][price]'];
+  let itemQuantities = req.body['cartItems[][quantity]'];
 
-app.get('/checkout', (req, res) => {
+  
+  if (!Array.isArray(itemNames)) { // check if its an array (single product issue)
+    itemNames = [itemNames];
+    itemPrices = [itemPrices];
+    itemQuantities = [itemQuantities];
+  }
 
-  // Calculate total
-  let cartItems = req.session.cart || []; //retieve cart items
-  const shippingCost = req.query.shipping; //Extract shipping, subtotal and total
-  const subtotal = req.query.subtotal;
+  
+  const cartItems = itemNames.map((name, i) => ({ //create an array
+    name: name,
+    price: itemPrices[i],
+    quantity: itemQuantities[i],
+  }));
+
+  const shippingCost = req.body.shipping;
+  const subtotal = req.body.subtotal;
   const total = parseFloat(shippingCost) + parseFloat(subtotal);
 
-  // Render checkout page with all necessary variables
-  res.render('pages/checkout', { cartItems, subtotal, shippingCost, total });
+  res.render('pages/checkout', { subtotal, shippingCost, total, cartItems, cartItemCount: cartItems.length });
 });
+
 
 app.post('/charge', function(req, res) {
   var total = req.body.total; // retrieve total value from form data
@@ -360,65 +393,46 @@ app.post('/charge', function(req, res) {
         subtotal: req.body.subtotal,
         shippingCost: req.body.shippingCost,
         userId: req.session.userId,
-        products: []
+        products: [] // Initialize products array
       });
 
-      if (req.body.cartItem) {
-        req.body.cartItem.forEach(function(item) { //Add details of products to order 
-          let parts = item.split('|');
-          newOrder.products.push({
-            name: parts[0],
-            price: parts[1],
-            quantity: parts[2] 
-          });
+      // Iterate through the cart items and add them to the products array
+      if (req.body['cartItems[][name]']) {
+        req.body['cartItems[][name]'].forEach((name, index) => {
+          const price = req.body['cartItems[][price]'][index];
+          const quantity = req.body['cartItems[][quantity]'][index];
+          newOrder.products.push({ name, price, quantity });
         });
       }
-      
+
       // Validate the order
       newOrder.validate(function(error) {
         if (error) {
-            const errors = Object.values(error.errors).map((err) => err.message);
-            req.flash('error_messages', errors); // save error messages in flash
-            res.redirect('/checkout'); 
+          const errors = Object.values(error.errors).map((err) => err.message);
+          req.flash('error_messages', errors); // save error messages in flash
+          res.redirect('/checkout'); 
         } else {
-            // Update user's orders
-            User.findByIdAndUpdate(req.session.userId, { $push: { orders: newOrder._id } }, function(err, user) { //push new order ID into order array
-              if (err) {
-                console.error('Error updating user orders:', err);
-                res.status(500).send('Error updating user orders');
-              } else {
-                // Save the order
-                newOrder.save((err, savedOrder) => {
-                  if (err) {
-                    console.error('Order creation failed:', err);
-                    res.status(500).send('Error saving order');
-                  } else {
-                    req.session.order = savedOrder; // Save order to session
-                    res.redirect('/confirmation');
-                  }
-                });
-              }
-            });
+          // Update user's orders
+          User.findByIdAndUpdate(req.session.userId, { $push: { orders: newOrder._id } }, function(err, user) {
+            if (err) {
+              console.error('Error updating user orders:', err);
+              res.status(500).send('Error updating user orders');
+            } else {
+              // Save the order
+              newOrder.save((err, savedOrder) => {
+                if (err) {
+                  console.error('Order creation failed:', err);
+                  res.status(500).send('Error saving order');
+                } else {
+                  req.session.order = savedOrder; // Save order to session
+                  res.redirect('/confirmation');
+                }
+              });
+            }
+          });
         }
       });
-      
-
     }
-  });
-});
-
-app.post('/validate-order', (req, res) => { // create new order instance with provided form data
-  
-  let newOrder = new Order(req.body);
-
-  
-  newOrder.validate(function(error) { // validate the new order instance
-      if (error) {
-          const errors = Object.values(error.errors).map((err) => err.message);  // extract error messages
-          res.status(400).json({ errors });
-      } else {
-          res.status(200).json({ success: true });
-      }
   });
 });
 

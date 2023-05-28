@@ -163,6 +163,8 @@ Mobile phone autofill
 Shipping/tracking information
 Carzone scraper wouldn't work
 Add orders section for Admins where they can view all placed orders
+Update Stripe
+
 
 
 

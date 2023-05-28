@@ -166,8 +166,7 @@
                               <% } %>
                               
 
-                              <!--
-                                <style>
+                              <!--<style>
                                 .product_count {
                                   display: flex;
                                   align-items: center;
@@ -193,7 +192,9 @@
                                         <form action="/cart" method="post">
                                             <input type="text" name="coupon" placeholder="Coupon code">
                                             <button class="primary-btn" type="submit">Apply</button>
-                                        </form> 
+                                          </form>
+                                       
+                                        
                                     </div>
                                 </td>
                             </tr>
@@ -223,15 +224,20 @@
                                     
                                 </td>
                                 <td>
-                                    <div class="shipping_box">   
-                                        <form method="get" action="/checkout">   
+                                    <div class="shipping_box">
+                                        
+                                        
+                                        <form method="post" action="/checkout">
+                                            
                                         <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>
                                         <select class="shipping_select">
                                             <option value="1">Ireland</option>
                                             <option value="2">United Kingdom</option>
                                             <option value="4">Rest of Europe</option>
                                         </select>
-
+                                        
+                                        
+                                        
                                         <select class="shipping_select">
                                             <option value="" disabled selected>Select closest Showroom</option>
                                             <option value="1">Long Mile Road</option>
@@ -260,8 +266,11 @@
                                 </td>
                                 <td>
                                     <% for (const cartItem of cartItems) { %>
-                                        <input type="hidden" name="productNames[]" value="<%= cartItem.product.productName %>">
+                                        <input type="hidden" name="cartItems[][name]" value="<%= cartItem.product.productName %>">
+                                        <input type="hidden" name="cartItems[][price]" value="<%= cartItem.product.Price %>">
+                                        <input type="hidden" name="cartItems[][quantity]" value="<%= cartItem.quantity %>">
                                       <% } %>
+                                      
 
                                     <input type="hidden" name="subtotal" value="<%= subtotal %>">
                                     <div class="checkout_btn_inner d-flex align-items-center">

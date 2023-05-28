@@ -138,18 +138,25 @@
                         <li><a href="#">Subtotal <span>€<%= subtotal %></span></a></li>
                         <li><a href="#">Shipping <span>€<%= shippingCost %></span></a></li>
                         <li><a href="#">Total <span>€<span id="total"></span></span></a></li>
-                        
-                        <script>
-                          var subtotal = <%= subtotal %>;
-                          var shippingCost = <%= shippingCost %>;
-                          var total = subtotal + shippingCost;
-                          document.getElementById("total").textContent = total.toFixed(2);
-                        </script>
-                      </ul>
-
-                      
-                      <p>Subtotal: €</p>
-
+                    </ul>
+                    <br>
+                    <h2>Product Details</h2>
+                    <ul class="list list_2">
+                      <% if (cartItems.length > 0) { %>
+                        <% cartItems.forEach(function(item) { %>
+                          <div>
+                            <p style="color:black;">Product Name: <%= item.name %></p>
+                            <p style="color:black;">Quantity: <%= item.quantity %></p>
+                            <p style="color:black;">Price: <%= item.price %></p>
+                          </div>
+                        <% }); %>
+                      <% } else { %>
+                        <p style="color:black;">Your cart is empty</p>
+                      <% } %>
+                    </ul>
+                    
+    
+                    
                     </div>
                 </div>
                 <br>
@@ -196,11 +203,14 @@
                                     
                                 </div>
                                 <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
-                                    <% if (Array.isArray(cartItems)) { %>
-                                        <% cartItems.forEach(function(item) { %>
-                                        <input type="hidden" name="cartItem[]" value="<%= item.name %>|<%= item.price %>">
-                                        <% }); %>
-                                    <% } %>
+                                <% cartItems.forEach(function(item, index) { %>
+                                    <input type="hidden" name="cartItems[<%= index %>].name" value="<%= item.name %>">
+                                    <input type="hidden" name="cartItems[<%= index %>].price" value="<%= item.price %>">
+                                    <input type="hidden" name="cartItems[<%= index %>].quantity" value="<%= item.quantity %>">
+                                  <% }); %>
+
+
+                                   
                                     <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
                                     <br>
                                     <div class="creat_account">
@@ -221,6 +231,12 @@
                                         data-label="PROCEED TO PAYMENT">
                                     </script>
                         </form>
+                        <script>
+                          var subtotal = <%= subtotal %>;
+                          var shippingCost = <%= shippingCost %>;
+                          var total = subtotal + shippingCost;
+                          document.getElementById("total").textContent = total.toFixed(2);
+                        </script>
                     </div>
                 </div>
             </div>
@@ -313,9 +329,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
 <script src="../../public/js/nouislider.min.js"></script>
 <script src="../../public/js/jquery.magnific-popup.min.js"></script>
 <script src="../../public/js/owl.carousel.min.js"></script>
-<!--gmaps Js-->
-
-<script src="../../public/js/gmaps.min.js"></script>
 <script src="../../public/js/main.js"></script>
 <script src="../../public/js/stock.js"></script>
 </body>

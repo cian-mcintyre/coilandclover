@@ -5,8 +5,8 @@ const carSchema = {
     image: String,
     category: String,
     colour: String,
-    Quantity: String,
-    Price: String,
+    Quantity: Number,
+    Price: Number,
     Page: String
 }
 
