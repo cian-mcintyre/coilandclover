@@ -63,11 +63,9 @@ const orderSchema ={
   shippingCost: {
     type: Number,
   },
-  products: [
+  cartItems: [
     {
       name: { type: String, required: true },
-      price: { type: Number, required: true },
-      quantity: { type: Number, required: true },
     },
   ],
   trackingNumber: {

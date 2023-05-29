@@ -189,8 +189,12 @@
                 <tr class="order-tr">
                     <td class="order-td"><%= order.orderNumber %></td>
                     <td class="order-td">€<%= order.total %></td>
-                    <td class="order-td">€<%= order.trackingNumber %></td>
-                    <td class="order-td"><%= order._id.products %></td> <!-- Replace with actual date field if available -->
+                    <td class="order-td"><%= order.trackingNumber %></td>
+                    <td class="order-td">
+                        <% order.cartItems.forEach(function(item) { %>
+                          <%= item.name %>
+                        <% }) %>
+                      </td>
                 </tr>
                 <% }) %>
             </tbody>

@@ -204,9 +204,7 @@
                                 </div>
                                 <input class="primary-btn" type="hidden" name="total" value="<%= total %>">
                                 <% cartItems.forEach(function(item, index) { %>
-                                    <input type="hidden" name="cartItems[<%= index %>].name" value="<%= item.name %>">
-                                    <input type="hidden" name="cartItems[<%= index %>].price" value="<%= item.price %>">
-                                    <input type="hidden" name="cartItems[<%= index %>].quantity" value="<%= item.quantity %>">
+                                    <input type="hidden" name="cartItems[]" value="<%= item.name %>">
                                   <% }); %>
 
 
@@ -230,6 +228,8 @@
                                         data-locale="auto"
                                         data-label="PROCEED TO PAYMENT">
                                     </script>
+                                    <!--<script src="https://js.stripe.com/v3"></script>
+                                    <button type="button" id="checkout-button">Pay</button>-->
                         </form>
                         <script>
                           var subtotal = <%= subtotal %>;
@@ -331,6 +331,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
 <script src="../../public/js/owl.carousel.min.js"></script>
 <script src="../../public/js/main.js"></script>
 <script src="../../public/js/stock.js"></script>
+<script src="../../public/js/client.js"></script>
 </body>
 
 </html>

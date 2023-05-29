@@ -130,7 +130,6 @@ SoW:
 User:
 User able to Register an account
 User able to log in
-User being able to register and log out 
 User able to place an order and receive a tracking number
 User able to browse by category/colour/type
 User able to search for products

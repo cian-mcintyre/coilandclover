@@ -112,15 +112,17 @@ app.use((req, res, next) => {
 //Stock price available in all routes
 
 app.get('/stock-price', function(req, res){
-
-
   axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DAI.DE&apikey=' + process.env.MERCEDES_STOCK_API_KEY)
   .then(response => {
-      let data = {
-          price: response.data["Global Quote"]["05. price"],
-          changePercent: response.data["Global Quote"]["10. change percent"]
-      };
-      res.send(data);
+      if(response.data["Global Quote"]) {
+          let data = {
+              price: response.data["Global Quote"]["05. price"],
+              changePercent: response.data["Global Quote"]["10. change percent"]
+          };
+          res.send(data);
+      } else {
+          throw new Error('Global Quote not present in API response');
+      }
   })
   .catch(error => {
       console.error(error);
@@ -197,34 +199,43 @@ app.get('/admin-login', (req, res) => {
         }
       });
 
-// ADMIN - ADD A PRODUCT
+// ADMIN - ADD A PRODUCT & VIEW ORDERS
 app.get('/admin',  (req, res) => {
-    if (req.session && req.session.adminId) {
-        Admin.findById(req.session.adminId, (err, user) => { //check admin creds 
-          if (err) {
-            console.log(err);
-          } else {
-            res.render('pages/admin', { user: user });
-          }
-        });
-      } else {
-        res.redirect('/admin-login');
-      }
-    });
-
-    app.post("/admin", upload.single('image'), function(req, res){ 
-      let newCar = new Car({ //create a new car product in DB 
-          productName: req.body.productName,
-          category: req.body.category,
-          colour: req.body.colour,
-          Quantity: req.body.Quantity,
-          Price: req.body.Price,
-          image: req.file ? req.file.filename : '' //use upload.single image middleware for adding photo
+  if (req.session && req.session.adminId) {
+      Admin.findById(req.session.adminId, (err, user) => { //check admin creds 
+        if (err) {
+          console.log(err);
+        } else {
+          // In addition to the admin user, we also need all orders
+          Order.find({}, (err, orders) => {
+            if (err) {
+              console.log(err);
+              res.redirect('/');
+            } else {
+              // Render the admin page with both the user and the orders
+              res.render('pages/admin', { user: user, orders: orders });
+            }
+          });
+        }
       });
-      
-      newCar.save();
-      res.redirect('/');
+    } else {
+      res.redirect('/admin-login');
+    }
   });
+
+app.post("/admin", upload.single('image'), function(req, res){ 
+let newCar = new Car({ //create a new car product in DB 
+    productName: req.body.productName,
+    category: req.body.category,
+    colour: req.body.colour,
+    Quantity: req.body.Quantity,
+    Price: req.body.Price,
+    image: req.file ? req.file.filename : '' //use upload.single image middleware for adding photo
+});
+
+newCar.save();
+res.redirect('/');
+});
 
 // CART ITEM COUNTER
 
@@ -364,8 +375,12 @@ app.post('/checkout', (req, res) => {
 
 
 app.post('/charge', function(req, res) {
-  var total = req.body.total; // retrieve total value from form data
-  stripe.charges.create({ //Use Stripe API to create charge
+  console.log('Starting /charge route...'); // Add initial logging statement
+  
+  var total = req.body.total;
+  console.log('Total:', total); // Log total
+
+  stripe.charges.create({
     amount: total,
     currency: 'eur',
     source: req.body.stripeToken,
@@ -375,7 +390,8 @@ app.post('/charge', function(req, res) {
       console.error('Stripe charge creation failed:', err);
       res.status(500).send('An error occurred while processing the payment');
     } else {
-      // Payment successful, now we can create the order.
+      console.log('Stripe charge created successfully.'); // Log successful charge
+
       let newOrder = new Order({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -393,38 +409,44 @@ app.post('/charge', function(req, res) {
         subtotal: req.body.subtotal,
         shippingCost: req.body.shippingCost,
         userId: req.session.userId,
-        products: [] // Initialize products array
+        cartItems: [] // Initialize products array
       });
+      console.log('New order created:', newOrder); // Log new order
 
-      // Iterate through the cart items and add them to the products array
-      if (req.body['cartItems[][name]']) {
-        req.body['cartItems[][name]'].forEach((name, index) => {
-          const price = req.body['cartItems[][price]'][index];
-          const quantity = req.body['cartItems[][quantity]'][index];
-          newOrder.products.push({ name, price, quantity });
-        });
+      let cartItems = req.body['cartItems[]'];
+      if (!Array.isArray(cartItems)) {
+      cartItems = [cartItems];
       }
 
-      // Validate the order
+cartItems.forEach((name) => {
+  newOrder.cartItems.push({ name });
+});
+
+      console.log('Products added to order:', newOrder.cartItems); // Log products
+
       newOrder.validate(function(error) {
         if (error) {
+          console.error('Order validation failed:', error); // Log validation error
           const errors = Object.values(error.errors).map((err) => err.message);
-          req.flash('error_messages', errors); // save error messages in flash
+          req.flash('error_messages', errors);
           res.redirect('/checkout'); 
         } else {
-          // Update user's orders
+          console.log('Order validation successful.'); // Log successful validation
+
           User.findByIdAndUpdate(req.session.userId, { $push: { orders: newOrder._id } }, function(err, user) {
             if (err) {
               console.error('Error updating user orders:', err);
               res.status(500).send('Error updating user orders');
             } else {
-              // Save the order
+              console.log('User orders updated successfully.'); // Log successful user update
+
               newOrder.save((err, savedOrder) => {
                 if (err) {
                   console.error('Order creation failed:', err);
                   res.status(500).send('Error saving order');
                 } else {
-                  req.session.order = savedOrder; // Save order to session
+                  console.log('Order saved successfully:', savedOrder); // Log successful order save
+                  req.session.order = savedOrder;
                   res.redirect('/confirmation');
                 }
               });
