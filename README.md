@@ -1,9 +1,34 @@
-# coilandclover (This was the name of the repo when it was a e-commerce site of St Patricks day themed snake accesories)
+Brief:
 
+Create an Information System for a selected domain of interest. 
+
+You may use any back-end, including a DB developed in another module. 
+
+You may use any front-end, including CLI, GUI, web and API, however API/web is strongly recommended
+
+Describe the requirements of the information system, including users, data requirements, search, sorting, entry, update, validation, integrity, reporting etc.
+
+Implement and test the Information System, and document your implementation thoroughly. Documentation should be developed in the same repository, in a text based format (NOT MS Word) such as README.md or .tex or .html
+
+    GitHub/GitLab MUST be used for this project to develop both the artefact and documentation, and any code or material uploaded as a fait accompli will not be credited. Furthermore, any such code not attributed or presented contrary to its originating licence will be the subject of Academic Impropriety investigations
+    Git will also be used to verify engagement and contribution, and failure to engage will result in a zero grade.
+    You must attribute all code not written from scratch, either in accordance with its licence, if applicable, or if not, #taken from ...  failure to do so will result in a zero grade. A summary of code attributions must be included at the end of the documentation
+
+
+You may use any programming language, however example programs will be presented in Python, with some front-end JS
+
+There will be a presentation at the end of the Semester, with the Moderator present or sent recordings, in order to assist in grading the work
+
+==========
+
+
+# coilandclover (This was the name of the repo when it was a e-commerce site of St Patricks day themed snake accessories)
+
+Requirements:
 A Mercedes website of the future. Including the following pages: 
 
 Front end
-A responsive web-based user interface using HTML, CSS, Bootstrap, JavaScript and Node.js for the frontend. The site is a Mercedes website of the future featuring futuristic car models and prototypes.
+A responsive web-based user interface using HTML, CSS, Bootstrap and JavaScript. The site is a Mercedes website of the future featuring futuristic car models and prototypes.
 
 Back end: 
 The site uses nodes, express and MongoDB. It is hosted on Azure. The site uses several middleware configurations for Express, including session management, flash messages, body parsing, method override, and serving static files.
@@ -15,18 +40,19 @@ Product displays in loop
 Add to cart + Remove from cart
 Stock price integration
 Nav bar: Login name displayed
-Nav Bar: Cart counter
+Nav bar: Cart counter
 Nav bar: Product search
 Category page filter
 Contact form submission
 Maps API integration
-Donegal ad scraper + filters/search 
+Donedeal ad scraper + filters/search 
 Checkout with Stripe information and order validation
 User Login with validation
 User registration with validation
 Account edit & order view
 Logout
 Admin access & Add a new product
+Admin orders view
 Azure app service
 
 
@@ -38,7 +64,7 @@ The nav bar directs the user around the site with custom integrations welcoming 
 
 
 - Homepage: 
-The homepage has the products from the DB inserted in a loop, so that if a new product is added it appears in list of products. It also has an add to cart feature under each of the products and a stock price API connected in the footer. Included in the UI is some product caousels, hover overlays and countdown timers. 
+The homepage has the products from the DB inserted in a loop, so that if a new product is added it appears in list of products. It also has an add to cart feature under each of the products and a stock price API connected in the footer. Included in the UI is some product carousels, hover overlays and countdown timers. 
 
 
 - Category/Shop:
@@ -70,7 +96,7 @@ The checkout page is where the user reviews their order totals and enter their b
 
 
 - Cart
-The Cart page shows the list of cars that the user has added to their cart. The use can use a remove middleware to remove an item from their cart. 
+The Cart page shows the list of cars that the user has added to their cart. They can use a remove middleware to remove an item from their cart. 
 
 
 - Confirmation
@@ -98,7 +124,7 @@ The Admin Login page allows only admins to log in.
 
 
 - Add a product
-The Admin page is accessible for admins only and allows admins to add cars to the site, including uploading a photo of the product. 
+The Admin page is accessible for admins only and allows admins to add cars to the site, including uploading a photo of the product. The admin can also see a list of all placed orders. 
 
 
 Main routes: 
