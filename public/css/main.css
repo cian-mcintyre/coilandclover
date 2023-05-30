@@ -5334,7 +5334,7 @@ label {
   .single-footer-widget .info.error {
     color: blue; }
 
-  /* Popup container - can be anything you want */
+  /* Popup container */
 .popup {
   position: relative;
   display: inline-block;
@@ -5343,6 +5343,24 @@ label {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+ .popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(90deg, #28AFB0 0%, #19647E 100%);
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 9999;
+}
+
+.popup.show {
+  opacity: 1;
 }
 
 /* The actual popup */

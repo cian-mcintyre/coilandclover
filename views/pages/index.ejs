@@ -31,6 +31,8 @@
 	<link rel="stylesheet" href="../../public/css/ion.rangeSlider.skinFlat.css" />
 	<link rel="stylesheet" href="../../public/css/magnific-popup.css">
 	<link rel="stylesheet" href="../../public/css/main.css">
+	<script src="../../public/js/popup.js"></script>
+	
 </head>
 
 <body>
@@ -108,6 +110,7 @@
 	<!-- start banner Area -->
 	<section class="banner-area">
 		<div class="container">
+			
 			<div class="row fullscreen align-items-center justify-content-start">
 				<div class="col-lg-12">
 					<div class="active-banner-slider owl-carousel">
@@ -155,6 +158,11 @@
 	<!-- End banner Area -->
 	<!-- start features Area -->
 	<section class="features-area section_gap">
+		<% if (message) { %>
+			<div id="popup" class="popup">
+			  <%= message %>
+			</div>
+			<% } %>
 		<div class="container">
 			<div class="row features-inner">
 				<!-- single features -->
@@ -281,6 +289,7 @@
 				</div>
 				<div class="row">
 					<!-- single product -->
+					
                     <%carsList.forEach(car => { %>
 					<div class="col-lg-3 col-md-6">
 						<div class="single-product">
@@ -300,7 +309,7 @@
 									<div class="generic-btn">
 										<form class="add-to-cart-form" action="/add-to-cart" method="POST">
 										  <input type="hidden" name="productId" value="<%= car._id %>">
-										  <button type="submit" class="primary-btn">Add to Bag</button>
+										  <button type="submit" class="primary-btn" onclick="addToCart('<%= car.productName %>')">Add to Bag</button>
 										</form>
 										<br>
 									</div>
@@ -324,6 +333,7 @@
 					
 					<%})%>
 	
+
 				</div>
 			</div>	
 		</div>

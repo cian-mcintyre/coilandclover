@@ -29,7 +29,8 @@ const multer = require('multer');
 const upload = multer({ dest: 'public/img/product' }); 
 const shortid = require('shortid');
 const axios = require('axios');
-const cheerio = require('cheerio');
+const cheerio = require('cheerio')
+
 
 
 // MONGODB CONNECTION
@@ -141,7 +142,9 @@ app.get('/account', (req, res) => {
                   console.log(err);
                   res.redirect('/login'); //If error, redirect to login page
               } else {
-                  res.render('pages/account', { user: user, orders: user.orders }); // login and pass user and orders as variables
+                const userLoggedInMessage = 'You have been logged in';  
+                res.render('pages/account', { user: user, orders: user.orders, message: userLoggedInMessage }); // login and pass user and orders as variables
+                  
               }
           });
   } else {
@@ -265,6 +268,7 @@ app.post('/add-to-cart', (req, res) => {
   } else {
     req.session.cart[productId]++; //if there is already an item in the cart, add the new one
   }
+  req.flash('message', 'Added to cart');
   res.redirect('/');
 });
 
@@ -527,7 +531,8 @@ app.post('/submit-form', (req, res) => { // Define route to handle form submissi
 app.get('/', (req,res) =>{
     Car.find({},function(err, cars){
         res.render('pages/index', {
-            carsList: cars
+            carsList: cars,
+            message: req.flash('message')
         })
     })
 })
@@ -713,10 +718,11 @@ app.get('/single-product-cla', (req, res) => {
 
 
        //logout 
-  app.get('/logout', function (req, res) {
-    res.clearCookie('connect.sid');
-    res.redirect('/');
-    });
+       app.get('/logout', function (req, res) {
+        
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+      });
 
     //END ROUTES
 
