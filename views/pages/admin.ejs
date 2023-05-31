@@ -155,6 +155,37 @@
                 </div>
             </form>
         </div>
+        <div class="login_form_inner">
+            <table style="width: 100%; margin: 30px auto; border-collapse: collapse; color: black;">
+              <thead>
+                <tr class="order-tr">
+                  <th class="order-th">Product Name</th>
+                  <th class="order-th">Category</th>
+                  <th class="order-th">Colour</th>
+                  <th class="order-th">Quantity</th>
+                  <th class="order-th">Price</th>
+                  <th class="order-th">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% cars.forEach(function(car) { %>
+                <tr class="order-tr">
+                  <td class="order-td"><%= car.productName %></td>
+                  <td class="order-td"><%= car.category %></td>
+                  <td class="order-td"><%= car.colour %></td>
+                  <td class="order-td"><%= car.Quantity %></td>
+                  <td class="order-td"><%= car.Price %></td>
+                  <td class="order-td">
+                    <form action="/admin/delete-product" method="POST">
+                        <input type="hidden" name="_id" value="<%= car._id %>">
+                        <button class="primary-btn" type="submit">Delete</button>
+                      </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
         <div class="orders">
             
             <% if (orders.length > 0) { %>

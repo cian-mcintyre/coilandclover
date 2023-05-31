@@ -84,24 +84,8 @@ app.use(express.json())
 
 /////////////// SET ROUTES /////////////////////
 
-//user avaiable in all routes
 
-app.use((req, res, next) => {
-  if (req.session.userId) {
-    User.findById(req.session.userId)
-      .then(user => {
-        res.locals.user = user;
-        next();
-      })
-      .catch(error => {
-        console.log(error);
-        next();
-      });
-  } else {
-    res.locals.user = null;
-    next();
-  }
-});
+
 
 //cart available in all routes
 
@@ -110,11 +94,30 @@ app.use((req, res, next) => {
   next();
 });
 
+//user avaiable in all routes
+
+app.use((req, res, next) => {
+  if (req.session.userId) {
+    User.findById(req.session.userId)
+      .then(user => {
+        res.locals.user = user; // Add user to res.locals
+        next();
+      })
+      .catch(error => {
+        console.log(error);
+        next();
+      });
+  } else {
+    res.locals.user = null; // Set user to null in res.locals
+    next();
+  }
+});
+
 
 //Stock price available in all routes
 
 app.get('/stock-price', function(req, res){
-  axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DAI.DE&apikey=' + process.env.MERCEDES_STOCK_API_KEY)
+  axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MBG.DE&apikey=' + process.env.MERCEDES_STOCK_API_KEY)
   .then(response => {
       if(response.data["Global Quote"]) {
           let data = {
@@ -216,7 +219,14 @@ app.get('/admin', (req, res) => {
             console.log(err);
             res.redirect('/');
           } else {
-            res.render('pages/admin', { user: user, orders: orders });
+            Car.find({}, (err, cars) => {
+              if (err) {
+                console.log(err);
+                res.redirect('/');
+              } else {
+                res.render('pages/admin', { user: user, orders: orders, cars: cars });
+              }
+            });
           }
         });
       }
@@ -225,6 +235,7 @@ app.get('/admin', (req, res) => {
     res.redirect('/admin-login');
   }
 });
+
 
 app.get('/admin/download-orders', (req, res) => {
   if (req.session && req.session.adminId) {
@@ -307,6 +318,23 @@ app.post('/admin', upload.single('image'), (req, res) => {
 });
 
 
+app.post('/admin/delete-product', (req, res) => {
+  if (req.session && req.session.adminId) {
+    const productId = req.body._id;
+
+    Car.deleteOne({ _id: productId }, function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect('/admin');
+      }
+    });
+  } else {
+    res.redirect('/admin-login');
+  }
+});
+
+
 // CART ITEM COUNTER
 
 
@@ -323,37 +351,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// ADD TO CART / REMOVE FROM CART 
 
-app.post('/add-to-cart', (req, res) => {
-  const productId = req.body.productId;
-  if (!req.session.cart) { //check if user has a cart
-    req.session.cart = {};
-  }
-  if (!req.session.cart[productId]) { //check if product is already in cart
-    req.session.cart[productId] = 1; //if not make cart 1
-  } else {
-    req.session.cart[productId]++; //if there is already an item in the cart, add the new one
-  }
-  req.flash('message', 'Added to cart');
-  res.redirect('/');
-});
 
-app.post('/remove-from-cart', (req, res) => {
-  const productId = req.body.productId;
-  if (req.session.cart && req.session.cart[productId]) { //check if cart exists
-    req.session.cart[productId]--;
-    if (req.session.cart[productId] === 0) { //empty cart
-      delete req.session.cart[productId];
-    }
-  }
-  res.sendStatus(200);
+
+// CATEGORY
+
+app.get('/category', (req, res) => {
+    Car.find({},function(err, cars){ //retieve all products from the DB
+        res.render('pages/category', {
+            carsList: cars //object to hold car array 
+        })
+    })
+   });
+   
+// Route to handle filtering requests
+router.get('/cars', async (req, res) => {
+  const category = req.query.category; // Get the selected category from the query parameter
+  const cars = await Car.find({ category: category }); // Get the cars that match the selected category
+  res.json(cars); // Send the filtered cars as a JSON response
 });
+   
+
+
 
 
 /// CART
 
 app.get('/cart', async (req, res) => {
+  const user = User.findById(req.session.userId)
   const cartItems = []; //create empty cart
   const productIds = req.session.cart ? Object.keys(req.session.cart) : [];
   for (const productId of productIds) { //retieve items from cart
@@ -361,10 +386,11 @@ app.get('/cart', async (req, res) => {
     const quantity = req.session.cart[productId]; //fetch quantity
     cartItems.push({ product, quantity });
   }
-  res.render('pages/cart', { cartItems });
+  res.render('pages/cart', { cartItems, user });
+
 });
 
-router.post('/add-to-cart/:id', function(req, res, next) {
+app.post('/add-to-cart/:id', function(req, res, next) {
   var productId = req.params.id; //retrieve product IDs from URL
 
   Car.findById(productId, function(err, product) { //fetch details from DB
@@ -396,24 +422,35 @@ router.post('/add-to-cart/:id', function(req, res, next) {
 });
 
 
-// CATEGORY
 
-app.get('/category', (req, res) => {
-    Car.find({},function(err, cars){ //retieve all products from the DB
-        res.render('pages/category', {
-            carsList: cars //object to hold car array 
-        })
-    })
-   });
-   
-// Route to handle filtering requests
-router.get('/cars', async (req, res) => {
-  const category = req.query.category; // Get the selected category from the query parameter
-  const cars = await Car.find({ category: category }); // Get the cars that match the selected category
-  res.json(cars); // Send the filtered cars as a JSON response
+
+// ADD TO CART / REMOVE FROM CART 
+
+app.post('/add-to-cart', (req, res) => {
+  const productId = req.body.productId;
+  if (!req.session.cart) { //check if user has a cart
+    req.session.cart = {};
+  }
+  if (!req.session.cart[productId]) { //check if product is already in cart
+    req.session.cart[productId] = 1; //if not make cart 1
+  } else {
+    req.session.cart[productId]++; //if there is already an item in the cart, add the new one
+  }
+  req.flash('message', 'Added to cart');
+  res.redirect('/');
 });
-   
-module.exports = router;
+
+app.post('/remove-from-cart', (req, res) => {
+  const productId = req.body.productId;
+  if (req.session.cart && req.session.cart[productId]) { //check if cart exists
+    req.session.cart[productId]--;
+    if (req.session.cart[productId] === 0) { //empty cart
+      delete req.session.cart[productId];
+    }
+  }
+  res.sendStatus(200);
+});
+
 
 // CHECKOUT
 
@@ -422,6 +459,9 @@ app.post('/checkout', (req, res) => {
   let itemNames = req.body['cartItems[][name]']; // Extract cart item related fields from the body
   let itemPrices = req.body['cartItems[][price]'];
   let itemQuantities = req.body['cartItems[][quantity]'];
+  const firstName = req.session.firstName;
+  const lastName = req.session.lastName;
+  const email = req.session.email;
 
   
   if (!Array.isArray(itemNames)) { // check if its an array (single product issue)
@@ -441,7 +481,7 @@ app.post('/checkout', (req, res) => {
   const subtotal = req.body.subtotal;
   const total = parseFloat(shippingCost) + parseFloat(subtotal);
 
-  res.render('pages/checkout', { subtotal, shippingCost, total, cartItems, cartItemCount: cartItems.length });
+  res.render('pages/checkout', { subtotal, shippingCost, total, cartItems, cartItemCount: cartItems.length, firstName, lastName, email });
 });
 
 
@@ -489,8 +529,45 @@ app.post('/charge', function(req, res) {
       cartItems = [cartItems];
       }
 
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'mercedesfuturestore@gmail.com',
+          pass: 'M3rc3d3s27#'
+        }
+      });
+      function sendOrderConfirmationEmail(userEmail, order) {
+        const mailOptions = {
+          from: 'mercedesfuturestore@gmail.com',
+          to: userEmail,
+          subject: 'Order Confirmation',
+          html: `
+            <h1>Thank you for your order!</h1>
+            <p>Your order details:</p>
+            <ul>
+              <li>Order Number: ${order.orderNumber}</li>
+              <li>First Name: ${order.firstName}</li>
+              <li>Last Name: ${order.lastName}</li>
+              <li>Email: ${order.email}</li>
+              <li>Total: ${order.total}</li>
+              <li>Email: ${order.trackingNumber}</li>
+            </ul>
+            <p>Welcome to the future.</p>
+          `
+        };
+      
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        });
+      }
+      
 cartItems.forEach((name) => {
   newOrder.cartItems.push({ name });
+
 });
 
       console.log('Products added to order:', newOrder.cartItems); // Log products
@@ -518,6 +595,7 @@ cartItems.forEach((name) => {
                 } else {
                   console.log('Order saved successfully:', savedOrder); // Log successful order save
                   req.session.order = savedOrder;
+                  sendOrderConfirmationEmail(req.body.email, savedOrder);
                   res.redirect('/confirmation');
                 }
               });
@@ -625,6 +703,8 @@ app.get('/login', (req, res) => {
           }
           req.session.userId = user._id;
           req.session.firstName = user.firstName; //pass first name so it can be displayed in the nav bar 
+          req.session.lastName = user.lastName;
+          req.session.email = user.email;
           res.redirect('/account');
         } catch (e) {
           console.log(e);
@@ -808,5 +888,7 @@ app.use(function (err, req, res, next) {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+module.exports = router;
 
 

@@ -5,7 +5,7 @@ Use Stripe endpoints for order confirmation
 
 
 To do:
-Ordered products not showing correctly
+
 Price gauge for filters
 Send email on receipt of payment
 Country search 
@@ -84,12 +84,12 @@ Other:
 
 Site Title: A Mercedes webstore of the future.
 
-========= Front end =========
+/////////// Front end ///////////
 A responsive web-based user interface using HTML, CSS, Bootstrap and JavaScript. The site is a Mercedes website of the future featuring futuristic car models and prototypes.
 
 ===========================
 
-========= Back end =========
+/////////// Back end ///////////
 The site uses nodes, express and MongoDB. It is hosted on Azure. The site uses several middleware configurations for Express, including session management, flash messages, body parsing, method override, and serving static files.
 
 The different schemas in the backend are:
@@ -348,6 +348,8 @@ Image (The image is uploaded using the upload.single image middleware)
 
 
 The admin can also see all orders, filter them and download them to a spreadsheet using the exceljs middleware
+
+The admin can also delete products
 =========
 
 

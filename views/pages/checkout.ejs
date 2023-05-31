@@ -172,17 +172,17 @@
                         <h3>Billing Details</h3>
                         <form id="orderForm" class="row contact_form" action="/charge" method="post">
                             <div class="col-md-6 form-group p_star">
-                              <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" required><span id="firstNameError"></span>
+                              <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" required value="<%= user.firstName %>"><span id="firstNameError"></span>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                              <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" required><span id="lastNameError"></span>
+                              <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" required value="<%= user.lastName %>"><span id="lastNameError"></span>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                              <input type="tel" pattern="^\d{3}-\d{3}-\d{4}$" class="form-control" id="number" name="number" placeholder="Phone number" required>
+                              <input type="tel" pattern="^\d{3}-\d{3}-\d{4}$" class="form-control" id="number" name="number" placeholder="Phone number" required >
                               <small>Format: 123-456-7890</small><span id="numberError"></span>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                              <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required><span id="emailError"></span>
+                              <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required value="<%= user.email %>"><span id="emailError"></span>
                             </div>
                             <div class="col-md-12 form-group p_star">
                               <input type="text" class="form-control" id="add1" name="add1" placeholder="Address line 01" required><span id="add1Error"></span>
