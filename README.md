@@ -62,6 +62,7 @@ User requirements:
 Admin:
 - Admin able to add a new product (Including picture upload) 
 - Admin able to see all products placed on site
+- Admin able to filter orders and export as an excel
 
 Other:
 - Map feature showing Mercedes showrooms
@@ -107,7 +108,7 @@ Users (First name, last name, email, password)
 The site includes the following pages: 
 
 
-========= Homepage =========
+/////////// Homepage ///////////
 The homepage is where users can see upcoming cars, new models, site information and all of the products. It also has an add to cart feature under each of the products and a stock price API connected in the footer. Included in the UI is some product carousels, hover overlays and countdown timers. 
 
 Programming Functions: 
@@ -122,13 +123,13 @@ Stock price integration
 The Stock price integration is available in all routes. We are using the Alphantage API to retrieve the Mercedes stock price using Axios and display it in the footer of every page. 
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Nav bar ========= 
+/////////// Nav bar ///////////
 The nav bar directs the user around the site with custom integrations welcoming the user when they are logged in and showing a counter for the amount of items in the cart. 
 
 Programming functions:
@@ -147,12 +148,12 @@ Nav bar: Product search
 The search bar allows the user to search for products on the site. The program extracts the search query, removes any special characters and then search the database for products with that name. 
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
-========= Category/Shop =========
+/////////// Category/Shop ///////////
 The Category page shows all products available for purchase in an array. 
 
 Programming Functions:
@@ -161,15 +162,15 @@ Category page filter
 The category page filter allows the user to filter the products in the database by colour and car type. 
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
-========= Product pages =========
+/////////// Product pages ///////////
 The Product pages gives an in depth look at the cars, such as the design features, safety features, interior highlights, and exterior highlight. 
 
-===========================
+/////////////////////////////////
 
 
 
@@ -182,7 +183,7 @@ The Coming Soon page shows the user which products will be available in the futu
 
 
 
-========= Contact =========
+/////////// Contact ///////////
 The Contact page provides information on how to contact the Mercedes store in Dublin alongside a map.
 
 Programming Functions:
@@ -196,10 +197,12 @@ Maps API integration
 The Google Map shows the location of each of the official Mercedes garages in Dublin using the Maps API. 
 =========
 
+/////////////////////////////////
 
 
 
-========= Preowned =========
+
+/////////// Preowned ///////////
 A web scraper that pull in live data from DoneDeal Mercedes cars. 
 
 Programming Functions:
@@ -208,9 +211,12 @@ Donedeal ad scraper + filters/search
 The Preowned section scrapes DoneDeal for recent Mercedes ads and displays them in a table. Cheerio middleware is used for parsing and querying the data which is then trimmed to only display the content required. DataTables is used to filter and search the table. 
 =========
 
+/////////////////////////////////
 
 
-========= Checkout =========
+
+
+/////////// Checkout ///////////
 The checkout page is where the user reviews their order totals and enter their billing information. 
 
 Programming Functions:
@@ -220,13 +226,13 @@ Total shipping and product subtotals are passed from the cart page to the checko
 There is server side and front end live validation on the billing detail fields. 
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Cart =========
+/////////// Cart ///////////
 The Cart page shows the list of cars that the user has added to their cart. 
 
 Programming Functions: 
@@ -235,13 +241,13 @@ The productID and quantity is retrieved from the session data, the other details
 
 The user can us the remove middleware to remove an item from their cart. 
 =========
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Confirmation =========
+/////////// Confirmation ///////////
 The Confirmation page confirms an order once it has been placed. 
 
 Programming Functions: 
@@ -249,13 +255,13 @@ Programming Functions:
 The tracking number and order number are passed to the order page and inserted. 
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Register =========
+/////////// Register ///////////
 The Registration page allows users to register to the site so they can place an order. 
 
 Programming Functions:
@@ -271,13 +277,13 @@ The password is then hashed using BCRYPT.
 There is front end and server side validation implemented so the user is also informed if they have entered incorrect details.
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Login =========
+/////////// Login ///////////
 The User Login page allows users to log in to the site. There is email and password validation used. 
 
 Programming Functions:
@@ -288,13 +294,13 @@ The user login program allows the user to access their account information. The 
 There is front end and server side validation implemented so the user is also informed if they have entered incorrect details.
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Account =========
+/////////// Account ///////////
 The Account page is only accessible to logged in users and allows the user to change their details, such as name, email, or password. It also shows any orders they have placed. 
 
 Programming Functions:
@@ -304,11 +310,13 @@ The user can enter their updated details and save them to the database. The new 
 
 =========
 
+/////////////////////////////////
 
 
 
 
-========= Logout =========
+
+/////////// Logout ///////////
 The user can logout and their session is deleted. 
 
 Programming Functions: 
@@ -316,13 +324,13 @@ Programming Functions:
 A logout message is displayed on logout
 =========
 
-===========================
+/////////////////////////////////
 
 
 
 
 
-========= Admin Login =========
+/////////// Admin Login ///////////
 The Admin Login page allows only admins to log in. This is where the admin can see a list of all orders and add a new product to the database. 
 
 Programming Functions:
@@ -337,10 +345,13 @@ Colour
 Quantity
 Price 
 Image (The image is uploaded using the upload.single image middleware)
+
+
+The admin can also see all orders, filter them and download them to a spreadsheet using the exceljs middleware
 =========
 
 
-
+/////////////////////////////////
 
 ======================================================================
 
@@ -375,7 +386,7 @@ Test user login process:
 - Verify that the user session is maintained throughout the website.
 
 
-=================
+//////////////////////
 
 Product Browsing and Search:
 
@@ -387,7 +398,7 @@ Test product search functionality:
 - Verify that the search bar returns relevant products based on keywords.
 - Verify that the search results display accurate product information.
 
-=================
+//////////////////////
 
 Shopping Cart and Checkout:
 
@@ -404,7 +415,7 @@ Test the checkout process:
 - Verify that the user can proceed to payment and complete the transaction.
 - Verify that the order is saved in the database with accurate details.
 
-=================
+//////////////////////
 
 User Account Management:
 
@@ -417,7 +428,7 @@ Test order history:
 - Verify that each order displays accurate information.
 - Verify that the user can see their order details in their account.
 
-=================
+//////////////////////
 
 Security and Error Handling:
 
@@ -432,7 +443,7 @@ Test session management and authentication:
 Test security measures:
 - Verify that user passwords are securely hashed and stored in the database.
 
-=================
+//////////////////////
 
 Performance and Scalability:
 
@@ -444,7 +455,7 @@ Test scalability:
 - Simulate high traffic by sending concurrent requests to the website.
 - Verify that the website can handle the load without performance degradation or crashes.
 
-=================
+//////////////////////
 
 Compatibility and Responsiveness:
 
@@ -454,7 +465,7 @@ Test cross-browser compatibility:
 Test mobile responsiveness:
 - Test the website on various mobile devices and screen sizes to ensure proper display and usability.
 
-=================
+//////////////////////
 
 Integration and Third-Party Services:
 
@@ -466,21 +477,21 @@ Test database integration:
 - Verify that data is correctly retrieved and stored in the MongoDB database.
 - Test database queries and ensure data consistency.
 
-=================
+//////////////////////
 
 Accessibility:
 
 Test website accessibility:
 - Verify that the website meets accessibility standards (WCAG 2.1).
 
-=================
+//////////////////////
 
 Error Logging and Monitoring:
 
 Test error logging and reporting:
 - Verify that errors and exceptions are logged appropriately.
 
-=================
+//////////////////////
 
 Deployment and Environment Testing:
 

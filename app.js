@@ -30,6 +30,7 @@ const upload = multer({ dest: 'public/img/product' });
 const shortid = require('shortid');
 const axios = require('axios');
 const cheerio = require('cheerio')
+const excel = require('exceljs');
 
 
 
@@ -203,42 +204,108 @@ app.get('/admin-login', (req, res) => {
       });
 
 // ADMIN - ADD A PRODUCT & VIEW ORDERS
-app.get('/admin',  (req, res) => {
-  if (req.session && req.session.adminId) {
-      Admin.findById(req.session.adminId, (err, user) => { //check admin creds 
-        if (err) {
-          console.log(err);
-        } else {
-          // In addition to the admin user, we also need all orders
-          Order.find({}, (err, orders) => {
-            if (err) {
-              console.log(err);
-              res.redirect('/');
-            } else {
-              // Render the admin page with both the user and the orders
-              res.render('pages/admin', { user: user, orders: orders });
-            }
-          });
-        }
-      });
-    } else {
-      res.redirect('/admin-login');
-    }
-  });
 
-app.post("/admin", upload.single('image'), function(req, res){ 
-let newCar = new Car({ //create a new car product in DB 
+app.get('/admin', (req, res) => {
+  if (req.session && req.session.adminId) {
+    Admin.findById(req.session.adminId, (err, user) => {
+      if (err) {
+        console.log(err);
+      } else {
+        Order.find({}, (err, orders) => {
+          if (err) {
+            console.log(err);
+            res.redirect('/');
+          } else {
+            res.render('pages/admin', { user: user, orders: orders });
+          }
+        });
+      }
+    });
+  } else {
+    res.redirect('/admin-login');
+  }
+});
+
+app.get('/admin/download-orders', (req, res) => {
+  if (req.session && req.session.adminId) {
+    Admin.findById(req.session.adminId, (err, user) => {
+      if (err) {
+        console.log(err);
+        res.redirect('/admin');
+      } else {
+        Order.find({}, (err, orders) => {
+          if (err) {
+            console.log(err);
+            res.redirect('/admin');
+          } else {
+            const workbook = new excel.Workbook();
+            const worksheet = workbook.addWorksheet('Orders');
+
+            worksheet.columns = [
+              { header: 'Order Number', key: 'orderNumber', width: 15 },
+              { header: 'First Name', key: 'firstName', width: 15 },
+              { header: 'Last Name', key: 'lastName', width: 15 },
+              { header: 'Email', key: 'email', width: 20 },
+              { header: 'Eircode', key: 'zip', width: 10 },
+              { header: 'Total Price', key: 'total', width: 15 },
+              { header: 'Tracking Number', key: 'trackingNumber', width: 15 },
+              { header: 'Products', key: 'products', width: 30 },
+            ];
+
+            orders.forEach((order) => {
+              const products = order.cartItems.map((item) => item.name).join(', ');
+              worksheet.addRow({
+                orderNumber: order.orderNumber,
+                firstName: order.firstName,
+                lastName: order.lastName,
+                email: order.email,
+                zip: order.zip,
+                total: order.total,
+                trackingNumber: order.trackingNumber,
+                products: products,
+              });
+            });
+
+            res.setHeader(
+              'Content-Type',
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            );
+            res.setHeader(
+              'Content-Disposition',
+              'attachment; filename=order-list.xlsx'
+            );
+
+            workbook.xlsx.write(res)
+              .then(() => {
+                res.end();
+              })
+              .catch((err) => {
+                console.log(err);
+                res.redirect('/admin');
+              });
+          }
+        });
+      }
+    });
+  } else {
+    res.redirect('/admin-login');
+  }
+});
+
+app.post('/admin', upload.single('image'), (req, res) => {
+  let newCar = new Car({
     productName: req.body.productName,
     category: req.body.category,
     colour: req.body.colour,
     Quantity: req.body.Quantity,
     Price: req.body.Price,
-    image: req.file ? req.file.filename : '' //use upload.single image middleware for adding photo
+    image: req.file ? req.file.filename : ''
+  });
+
+  newCar.save();
+  res.redirect('/');
 });
 
-newCar.save();
-res.redirect('/');
-});
 
 // CART ITEM COUNTER
 
