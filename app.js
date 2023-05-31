@@ -533,7 +533,7 @@ app.post('/charge', function(req, res) {
         service: 'gmail',
         auth: {
           user: 'mercedesfuturestore@gmail.com',
-          pass: 'M3rc3d3s27#'
+          pass: process.env.GMAIL_PASSWORD
         }
       });
       function sendOrderConfirmationEmail(userEmail, order) {

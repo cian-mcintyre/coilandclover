@@ -1,19 +1,4 @@
-Learnings: 
-Simpler user journeys - The log in should be at the Add to cart stage, not at order stage.
-Google pay implementation 
-Use Stripe endpoints for order confirmation
 
-
-To do:
-
-Price gauge for filters
-Send email on receipt of payment
-Country search 
-Mobile phone autofill 
-Shipping/tracking information
-Carzone scraper wouldn't work
-Add orders section for Admins where they can view all placed orders
-Update Stripe
 
 
 
@@ -502,6 +487,32 @@ Test website deployment process:
 - Test the live website to ensure all functionalities work in the production environment.
 
 
+
+
+
+============LEARNINGS=================
+-
+The importance of simplifying code rather than adding to it. In several instances I decided to add new code to a route rather than editing the old route to incorporate the new code. Eventually I ended up with a very bloated code base which made it difficult to find where errors were coming from. I should have focused on keep my code lean from the beginning.
+
+-
+The user journey I used meant that there was duplication in the submission for the user. For example, a user has to enter their email four times (Once when registering, once when logging in, once when filling in billing details and once when paying with Stripe). I have tried to add autofill options and fill in details from the saved session data, but I should have focused on writing out clear user journeys before beginning coding. 
+
+-
+A consistent problem I have had with all projects is that I do not leave enough time for testing. I generally leave a week for testing, however when I get to that point I will continue to add new feature which can start their own projects. I should focus on being clearer with a scope at the start so I can leave enough time for testing my product in depth. 
+
+
+
+
+
+
+============OTHER NICE TO HAVES=================
+Price gauge for filters (Currently only colour and type)
+Addition of scroll animations and more dynamic content
+Better form field validation for emails and phone numbers 
+Adding real shipping/tracking information
+Carzone scraper integrated with Donedeal scraper
+Update Stripe endpoints with new Stripe Dashboard
+Mailchimp Newsletter integration
 
 
 
