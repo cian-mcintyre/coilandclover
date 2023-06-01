@@ -455,6 +455,10 @@ app.post('/remove-from-cart', (req, res) => {
 // CHECKOUT
 
 app.post('/checkout', (req, res) => {
+  if (!req.session.userId) {
+    req.flash('message', 'You must log in first');
+    return res.redirect('/login');
+  }
   
   let itemNames = req.body['cartItems[][name]']; // Extract cart item related fields from the body
   let itemPrices = req.body['cartItems[][price]'];

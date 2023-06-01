@@ -63,6 +63,8 @@ Other:
 
 ============SITE DESCRIPTION=================
 
+Site link: mercedes-store.azurewebsites.net 
+GitHub Repo: https://github.com/cian-mcintyre/coilandclover
 
 # coilandclover (This was the name of the repo when it was a e-commerce site of St Patricks day themed snake accessories)
 
@@ -513,6 +515,8 @@ Adding real shipping/tracking information
 Carzone scraper integrated with Donedeal scraper
 Update Stripe endpoints with new Stripe Dashboard
 Mailchimp Newsletter integration
+Forgot Password feature
+Coupon code feature
 
 
 
